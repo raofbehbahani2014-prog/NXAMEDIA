@@ -1,0 +1,35 @@
+<%- include('../../partials/admin-header', { active: 'users' }) %>
+
+<div class="admin-topbar">
+  <h1>👤 مشتریان ثبت‌نام‌شده (<%= users.length %>)</h1>
+</div>
+
+<div class="admin-card">
+  <% if (!users.length) { %>
+    <p style="color:var(--gray); text-align:center; padding:30px 0;">هنوز مشتری‌ای ثبت‌نام نکرده است.</p>
+  <% } else { %>
+    <table>
+      <thead><tr><th>نام</th><th>ایمیل</th><th>تلفن</th><th>تاریخ ثبت‌نام</th><th style="width:170px;">عملیات</th></tr></thead>
+      <tbody>
+        <% users.forEach(u => { %>
+          <tr>
+            <td><%= u.name %></td>
+            <td dir="ltr" style="text-align:right;"><%= u.email %></td>
+            <td><%= u.phone || '-' %></td>
+            <td style="font-size:12px; color:var(--gray);"><%= new Date(u.createdAt).toLocaleDateString('fa-IR') %></td>
+            <td>
+              <div style="display:flex; gap:6px;">
+                <a href="/admin/users/<%= u.id %>" class="btn btn-primary btn-sm">مدیریت پنل</a>
+                <form class="confirm-delete" action="/admin/users/<%= u.id %>/delete" method="POST">
+                  <button type="submit" class="btn btn-danger btn-sm">حذف</button>
+                </form>
+              </div>
+            </td>
+          </tr>
+        <% }) %>
+      </tbody>
+    </table>
+  <% } %>
+</div>
+
+<%- include('../../partials/admin-footer') %>

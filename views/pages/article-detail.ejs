@@ -1,0 +1,19 @@
+<%- include('../partials/header') %>
+
+<section class="hero" style="padding:60px 0;">
+  <div class="container">
+    <div class="breadcrumb"><a href="/">خانه</a> / <a href="/blog">وبلاگ</a> / <%= article.title %></div>
+    <h1><%= article.title %></h1>
+    <p style="font-size:13px; color:var(--gray);"><%= article.date %></p>
+  </div>
+</section>
+
+<section>
+  <div class="container" style="max-width:760px;">
+    <div class="card">
+      <p style="font-size:16px; line-height:2;"><%= article.content %></p>
+    </div>
+  </div>
+</section>
+
+<%- include('../partials/footer') %>

@@ -1,0 +1,96 @@
+<%
+  const seo = site.seo || {};
+  const _desc = (typeof description !== 'undefined' && description) ? description : (seo.defaultDescription || '');
+  const _base = (seo.siteUrl || '').replace(/\/$/, '') || (typeof baseUrl !== 'undefined' ? baseUrl : '');
+  const _canon = _base + (typeof currentPath !== 'undefined' ? currentPath : '/');
+  const _og = (typeof ogImage !== 'undefined' && ogImage) ? ogImage : seo.ogImage;
+  const _ogFull = _og ? (_og.startsWith('http') ? _og : _base + _og) : '';
+  const _type = (typeof ogType !== 'undefined') ? ogType : 'website';
+  const _noindex = (typeof noindex !== 'undefined') && noindex;
+%>
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= title %></title>
+  <meta name="description" content="<%= _desc %>">
+  <% if (seo.keywords) { %><meta name="keywords" content="<%= seo.keywords %>"><% } %>
+  <meta name="robots" content="<%= _noindex ? 'noindex,nofollow' : 'index,follow,max-image-preview:large' %>">
+  <meta name="theme-color" content="#DD2A7B">
+  <link rel="canonical" href="<%= _canon %>">
+  <% if (seo.gscVerification) { %><meta name="google-site-verification" content="<%= seo.gscVerification %>"><% } %>
+
+  <!-- Open Graph / Twitter -->
+  <meta property="og:type" content="<%= _type %>">
+  <meta property="og:locale" content="fa_IR">
+  <meta property="og:site_name" content="<%= site.siteName %>">
+  <meta property="og:title" content="<%= title %>">
+  <meta property="og:description" content="<%= _desc %>">
+  <meta property="og:url" content="<%= _canon %>">
+  <% if (_ogFull) { %><meta property="og:image" content="<%= _ogFull %>"><% } %>
+  <meta name="twitter:card" content="<%= _ogFull ? 'summary_large_image' : 'summary' %>">
+  <meta name="twitter:title" content="<%= title %>">
+  <meta name="twitter:description" content="<%= _desc %>">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/css/insta.css">
+
+  <!-- Structured Data: Organization -->
+  <script type="application/ld+json">
+  <%- JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "ProfessionalService",
+    "name": site.siteName,
+    "url": _base || undefined,
+    "description": seo.defaultDescription,
+    "telephone": site.contact.phone,
+    "email": site.contact.email,
+    "areaServed": "IR",
+    "knowsLanguage": "fa",
+    "sameAs": [site.contact.instagramUrl, site.contact.telegramUrl].filter(u => u && u !== '#')
+  }).replace(/</g, '\\u003c') %>
+  </script>
+  <% if (typeof jsonLd !== 'undefined' && jsonLd) { %>
+  <script type="application/ld+json"><%- JSON.stringify(jsonLd).replace(/</g, '\\u003c') %></script>
+  <% } %>
+
+  <% if (seo.gaId) { %>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=<%= seo.gaId %>"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','<%= seo.gaId %>');</script>
+  <% } %>
+</head>
+<body>
+  <div id="scroll-progress"></div>
+  <header class="site-header">
+    <div class="container nav-wrap">
+      <a href="/" class="logo" aria-label="<%= site.siteName %>"><%= site.logoText1 %><span><%= site.logoText2 %></span></a>
+
+      <button class="mobile-toggle" aria-label="منو">☰</button>
+
+      <nav class="main-nav" aria-label="منوی اصلی">
+        <ul>
+          <li><a href="/"><%= site.navLabels.home %></a></li>
+          <li><a href="/services"><%= site.navLabels.services %></a></li>
+          <li><a href="/portfolio"><%= site.navLabels.portfolio %></a></li>
+          <li><a href="/education"><%= site.navLabels.education %></a></li>
+          <li><a href="/courses"><%= site.navLabels.courses %></a></li>
+          <li><a href="/store"><%= site.navLabels.store || 'فروشگاه ادیت' %></a></li>
+          <li><a href="/about"><%= site.navLabels.about %></a></li>
+          <li><a href="/blog"><%= site.navLabels.blog %></a></li>
+          <li><a href="/contact"><%= site.navLabels.contact %></a></li>
+        </ul>
+      </nav>
+
+      <div class="header-actions">
+        <a href="/consultation" class="btn btn-ghost"><%= site.buttons.consultation %></a>
+        <a href="/request-project" class="btn btn-primary"><%= site.buttons.requestProject %></a>
+        <% if (currentUser) { %>
+          <a href="/client/dashboard" class="btn btn-outline"><%= site.buttons.clientPanel %></a>
+        <% } else { %>
+          <a href="/client/login" class="btn btn-outline"><%= site.buttons.clientLogin %></a>
+        <% } %>
+      </div>
+    </div>
+  </header>

@@ -1,0 +1,26 @@
+<%- include('../partials/header') %>
+
+<section class="hero" style="padding:60px 0;">
+  <div class="container">
+    <div class="breadcrumb"><a href="/">خانه</a> / وبلاگ</div>
+    <h1>وبلاگ و <span class="highlight">مقالات آموزشی</span></h1>
+    <p>جدیدترین ترندها، تکنیک‌ها و راهنماهای تولید محتوای اینستاگرام.</p>
+  </div>
+</section>
+
+<section>
+  <div class="container">
+    <div class="grid grid-3">
+      <% articles.forEach(a => { %>
+        <div class="card">
+          <p style="font-size:12px; color:var(--gray);"><%= a.date %></p>
+          <h3><%= a.title %></h3>
+          <p><%= a.excerpt %></p>
+          <a class="more" href="/blog/<%= a.slug %>">مطالعه مقاله ←</a>
+        </div>
+      <% }) %>
+    </div>
+  </div>
+</section>
+
+<%- include('../partials/footer') %>

@@ -1,0 +1,40 @@
+<%- include('../../partials/header') %>
+
+<section style="padding:40px 0;">
+  <div class="container">
+    <h1 style="font-size:24px;">فایل‌های پروژه</h1>
+    <div class="panel-layout" style="margin-top:24px;">
+      <%- include('../../partials/client-sidebar', { active: 'files' }) %>
+      <div class="panel-content">
+        <% if (ok) { %><p style="color:#15803D; background:#DCFCE7; padding:10px 14px; border-radius:10px; font-size:14px;">فایل آپلود شد.</p><% } %>
+        <% if (err) { %><p style="color:#B91C1C; background:#FEE2E2; padding:10px 14px; border-radius:10px; font-size:14px;">آپلود انجام نشد. نوع یا حجم فایل مجاز نیست (حداکثر ۲۰۰ مگابایت).</p><% } %>
+        <form action="/client/files/upload" method="POST" enctype="multipart/form-data" class="form-group" style="margin-bottom:24px;">
+          <label>آپلود فایل جدید برای تیم</label>
+          <input type="file" name="file" required>
+          <p style="font-size:12px; color:var(--gray); margin:6px 0 10px;">فرمت‌های مجاز: تصویر، ویدئو (mp4, mov, webm)، pdf، zip، فایل‌های آفیس</p>
+          <button type="submit" class="btn btn-primary">آپلود</button>
+        </form>
+
+        <h3 style="margin-bottom:12px;">فایل‌ها</h3>
+        <% if (!files.length) { %>
+          <p style="color:var(--gray);">هنوز فایلی وجود ندارد.</p>
+        <% } %>
+        <% files.forEach(f => { %>
+          <div class="faq-item" style="display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap;">
+            <div>
+              📁 <a href="<%= f.url %>" target="_blank" download style="color:var(--primary); font-weight:700;"><%= f.name %></a>
+              <span style="color:var(--gray); font-size:12px;"> — <%= f.by === 'client' ? 'ارسال شما' : 'ارسال تیم' %> · <%= fmtDate(f.createdAt) %></span>
+            </div>
+            <% if (f.by === 'client') { %>
+              <form action="/client/files/<%= f.id %>/delete" method="POST" onsubmit="return confirm('این فایل حذف شود؟');">
+                <button class="btn btn-outline" style="padding:6px 14px;">حذف</button>
+              </form>
+            <% } %>
+          </div>
+        <% }) %>
+      </div>
+    </div>
+  </div>
+</section>
+
+<%- include('../../partials/footer') %>

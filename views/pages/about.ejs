@@ -1,0 +1,61 @@
+<%- include('../partials/header') %>
+
+<section class="hero" style="padding:60px 0;">
+  <div class="container">
+    <h1>درباره <span class="highlight">NxMedia</span></h1>
+    <p>مجموعه‌ای متخصص در تولید محتوا و مدیریت اینستاگرام، با تیمی از کارگردانان، تدوین‌گران و استراتژیست‌های محتوا.</p>
+  </div>
+</section>
+
+<section>
+  <div class="container grid grid-2" style="align-items:center;">
+    <div>
+      <div class="tag" style="color:var(--primary); font-weight:700;">معرفی مجموعه</div>
+      <h2 style="font-size:26px; margin:10px 0;"><%= site.about.title %></h2>
+      <p style="color:var(--gray);"><%= site.about.text1 %></p>
+      <p style="color:var(--gray);"><%= site.about.text2 %></p>
+    </div>
+    <div class="grid grid-2" style="gap:16px;">
+      <div class="stat-box"><strong><%= site.about.stat1Value %></strong><span><%= site.about.stat1Label %></span></div>
+      <div class="stat-box"><strong><%= site.about.stat2Value %></strong><span><%= site.about.stat2Label %></span></div>
+      <div class="stat-box"><strong><%= site.about.stat3Value %></strong><span><%= site.about.stat3Label %></span></div>
+      <div class="stat-box"><strong><%= site.about.stat4Value %></strong><span><%= site.about.stat4Label %></span></div>
+    </div>
+  </div>
+</section>
+
+<section style="background:#fff;">
+  <div class="container">
+    <div class="section-head">
+      <div class="tag">معرفی تیم</div>
+      <h2>تیمی که پشت هر پروژه ایستاده</h2>
+    </div>
+    <div class="grid grid-4">
+      <% team.forEach(m => { %>
+        <div class="card" style="text-align:center;">
+          <% if (m.avatar) { %>
+            <img loading="lazy" src="<%= m.avatar %>" style="width:70px;height:70px;border-radius:50%;object-fit:cover;margin:0 auto 14px;">
+          <% } else { %>
+            <div style="width:70px;height:70px;border-radius:50%;background:#EDE9FE;margin:0 auto 14px;"></div>
+          <% } %>
+          <h3><%= m.name %></h3>
+          <p><%= m.role %></p>
+        </div>
+      <% }) %>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="container">
+    <div class="cta-band">
+      <h2>می‌خواهید بیشتر با تیم ما آشنا شوید؟</h2>
+      <p>یک جلسه مشاوره رایگان با کارشناسان NxMedia رزرو کنید.</p>
+      <div class="hero-actions">
+        <a href="/consultation" class="btn" style="background:#fff; color:var(--primary-dark);">رزرو مشاوره</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<%- include('../partials/footer') %>

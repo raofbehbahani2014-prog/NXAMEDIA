@@ -1,0 +1,28 @@
+<%- include('../../partials/header') %>
+
+<section style="padding:40px 0;">
+  <div class="container">
+    <h1 style="font-size:24px;">پروژه‌های من</h1>
+    <div class="panel-layout" style="margin-top:24px;">
+      <%- include('../../partials/client-sidebar', { active: 'projects' }) %>
+      <div class="panel-content">
+        <% if (!projects.length) { %>
+          <p style="color:var(--gray); text-align:center; padding:30px 0;">هنوز پروژه‌ای برای شما ثبت نشده است.</p>
+        <% } %>
+        <% projects.forEach(p => { %>
+          <div class="faq-item">
+            <h3><%= p.title %></h3>
+            <p>وضعیت: <b><%= p.status %></b> | شروع: <%= fmtDate(p.startDate) %> | تحویل: <%= fmtDate(p.dueDate) %></p>
+            <div style="background:#EEE8F7; border-radius:999px; height:10px; margin:10px 0 4px; overflow:hidden;">
+              <div style="width:<%= Number(p.progress) || 0 %>%; height:100%; background:var(--ig-gradient, var(--primary));"></div>
+            </div>
+            <p style="font-size:12px;">پیشرفت: <%= fmtMoney(p.progress) %>٪</p>
+            <% if (p.note) { %><p><%= p.note %></p><% } %>
+          </div>
+        <% }) %>
+      </div>
+    </div>
+  </div>
+</section>
+
+<%- include('../../partials/footer') %>

@@ -1,0 +1,76 @@
+<%- include('../partials/header') %>
+
+<section class="hero" style="padding:60px 0;">
+  <div class="container">
+    <div class="breadcrumb"><a href="/">خانه</a> / <a href="/services">خدمات</a> / <%= service.title %></div>
+    <% if (service.image) { %>
+      <img loading="lazy" src="<%= service.image %>" alt="<%= service.title %>" style="max-width:120px; border-radius:16px; margin:0 auto 16px;">
+    <% } else { %>
+      <span style="font-size:38px;"><%= service.icon %></span><br>
+    <% } %>
+    <h1><%= service.title %></h1>
+    <p><%= service.summary %></p>
+    <% if (amount) { %><div class="buy-price" style="margin-bottom:16px;"><small><%= service.priceNote || 'قیمت' %></small> <%= fmtMoney(amount) %> <small>تومان</small></div><% } %>
+    <div class="hero-actions">
+      <a href="/order/service/<%= service.slug %>" class="btn btn-primary"><%= amount ? 'سفارش این خدمت' : 'درخواست مشاوره و قیمت' %></a>
+      <a href="/consultation" class="btn btn-outline">مشاوره رایگان</a>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="container grid grid-2">
+    <div>
+      <h2 style="font-size:22px; margin-bottom:16px;">این خدمت شامل چه مواردی است؟</h2>
+      <ul style="display:flex; flex-direction:column; gap:12px;">
+        <% service.details.forEach(d => { %>
+          <li style="background:#fff; border:1px solid var(--border); border-radius:12px; padding:14px 18px;">✅ <%= d %></li>
+        <% }) %>
+      </ul>
+    </div>
+    <div class="form-box" style="margin:0;">
+      <h3 style="margin-bottom:16px;">درخواست سریع مشاوره برای «<%= service.title %>»</h3>
+      <form action="/request-project" method="POST">
+        <input type="hidden" name="service" value="<%= service.title %>">
+        <div class="form-group">
+          <label>نام و نام خانوادگی</label>
+          <input type="text" name="name" required>
+        </div>
+        <div class="form-group">
+          <label>شماره تماس یا واتساپ</label>
+          <input type="text" name="phone" required>
+        </div>
+        <div class="form-group">
+          <label>توضیح مختصر نیاز شما</label>
+          <textarea name="message"></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary" style="width:100%;">ارسال درخواست</button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<section style="background:#fff;">
+  <div class="container">
+    <div class="section-head">
+      <div class="tag">سایر خدمات</div>
+      <h2>ممکن است به این خدمات هم نیاز داشته باشید</h2>
+    </div>
+    <div class="grid grid-3">
+      <% related.forEach(s => { %>
+        <div class="card">
+          <% if (s.image) { %>
+            <img loading="lazy" src="<%= s.image %>" alt="<%= s.title %>" style="width:100%; height:110px; object-fit:cover; border-radius:12px; margin-bottom:10px;">
+          <% } else { %>
+            <div class="icon"><%= s.icon %></div>
+          <% } %>
+          <h3><%= s.title %></h3>
+          <p><%= s.summary %></p>
+          <a class="more" href="/services/<%= s.slug %>">مشاهده جزئیات ←</a>
+        </div>
+      <% }) %>
+    </div>
+  </div>
+</section>
+
+<%- include('../partials/footer') %>

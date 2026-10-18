@@ -1,0 +1,39 @@
+<% const _active = typeof active !== 'undefined' ? active : ''; %>
+<% const _key = typeof key !== 'undefined' ? key : ''; %>
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= title %></title>
+  <link rel="stylesheet" href="/css/admin.css">
+</head>
+<body>
+<div class="admin-shell">
+  <aside class="admin-sidebar">
+    <div class="brand">Nx<span>Media</span> · ادمین</div>
+    <a href="/admin" class="<%= !_key && !_active ? 'active' : '' %>">📊 داشبورد</a>
+    <a href="/admin/site-settings" class="<%= _active === 'site-settings' ? 'active' : '' %>">🛠️ متن‌ها و تنظیمات سایت</a>
+    <a href="/admin/media" class="<%= _active === 'media' ? 'active' : '' %>">🖼️ کتابخانه رسانه</a>
+    <a href="/admin/orders" class="<%= _active === 'orders' ? 'active' : '' %>">🧾 سفارش‌ها و پرداخت‌ها</a>
+    <a href="/admin/users/all" class="<%= _active === 'users' ? 'active' : '' %>">👤 مشتریان ثبت‌نام‌شده</a>
+    <a href="/admin/leads/all" class="<%= _active === 'leads' ? 'active' : '' %>">📥 درخواست‌های دریافتی</a>
+
+    <div class="group-title">مدیریت محتوا</div>
+    <a href="/admin/services" class="<%= _key === 'services' ? 'active' : '' %>">🧩 خدمات</a>
+    <a href="/admin/portfolio" class="<%= _key === 'portfolio' ? 'active' : '' %>">🖼️ نمونه‌کارها</a>
+    <a href="/admin/assets" class="<%= _key === 'assets' ? 'active' : '' %>">🛍️ فروشگاه فیچرها</a>
+    <a href="/admin/courses" class="<%= _key === 'courses' ? 'active' : '' %>">🎓 دوره‌ها</a>
+    <a href="/admin/articles" class="<%= _key === 'articles' ? 'active' : '' %>">📝 مقالات وبلاگ</a>
+    <a href="/admin/testimonials" class="<%= _key === 'testimonials' ? 'active' : '' %>">💬 نظرات مشتریان</a>
+    <a href="/admin/faqs" class="<%= _key === 'faqs' ? 'active' : '' %>">❓ سوالات متداول</a>
+    <a href="/admin/team" class="<%= _key === 'team' ? 'active' : '' %>">👥 تیم</a>
+    <a href="/admin/pricing" class="<%= _key === 'pricing' ? 'active' : '' %>">💰 تعرفه‌ها</a>
+
+    <div class="group-title">دسترسی سریع</div>
+    <a href="/" target="_blank">🌐 مشاهده سایت</a>
+    <form action="/admin/logout" method="POST">
+      <button type="submit" class="btn btn-outline" style="width:100%; margin-top:10px;">خروج از پنل</button>
+    </form>
+  </aside>
+  <main class="admin-main">

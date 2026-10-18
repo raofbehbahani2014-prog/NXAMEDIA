@@ -1,0 +1,58 @@
+<%- include('../../partials/header') %>
+
+<section style="padding:40px 0;">
+  <div class="container">
+    <h1 style="font-size:24px;">تقویم محتوایی</h1>
+    <div class="panel-layout" style="margin-top:24px;">
+      <%- include('../../partials/client-sidebar', { active: 'calendar' }) %>
+      <div class="panel-content" style="overflow-x:auto;">
+        <% if (!items.length) { %>
+          <p style="color:var(--gray); text-align:center; padding:30px 0;">هنوز محتوایی در تقویم شما ثبت نشده است.</p>
+        <% } else { %>
+          <table style="width:100%; border-collapse:collapse; font-size:14px;">
+            <thead>
+              <tr style="background:#F8F6FC; text-align:right;">
+                <th style="padding:12px;">تاریخ</th><th style="padding:12px;">نوع</th><th style="padding:12px;">موضوع</th><th style="padding:12px;">وضعیت</th><th style="padding:12px;">اقدام</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% items.forEach(c => { %>
+                <tr style="border-top:1px solid var(--border); vertical-align:top;">
+                  <td style="padding:12px;"><%= fmtDate(c.date) %></td>
+                  <td style="padding:12px;"><%= c.type %></td>
+                  <td style="padding:12px;">
+                    <%= c.topic %>
+                    <% if (c.mediaUrl) { %>
+                      <div style="margin-top:8px;">
+                        <% if (/\.(mp4|webm|mov)$/i.test(c.mediaUrl)) { %>
+                          <video src="<%= c.mediaUrl %>" controls style="max-width:200px; border-radius:10px;"></video>
+                        <% } else { %>
+                          <a href="<%= c.mediaUrl %>" target="_blank"><img loading="lazy" src="<%= c.mediaUrl %>" alt="" style="max-width:140px; border-radius:10px;"></a>
+                        <% } %>
+                      </div>
+                    <% } %>
+                    <% if (c.clientNote) { %><div style="font-size:12px; color:var(--gray); margin-top:6px;">بازخورد شما: <%= c.clientNote %></div><% } %>
+                  </td>
+                  <td style="padding:12px;"><%= c.status %></td>
+                  <td style="padding:12px;">
+                    <% if (c.status === 'در انتظار تایید') { %>
+                      <form action="/client/content/<%= c.id %>/approve" method="POST" style="margin-bottom:8px;">
+                        <button class="btn btn-primary" style="padding:6px 14px;">تایید</button>
+                      </form>
+                      <form action="/client/content/<%= c.id %>/revise" method="POST">
+                        <input type="text" name="note" placeholder="چه چیزی اصلاح شود؟" required style="width:100%; padding:6px 8px; border:1px solid var(--border); border-radius:8px; margin-bottom:6px; font-family:inherit;">
+                        <button class="btn btn-outline" style="padding:6px 14px;">درخواست اصلاح</button>
+                      </form>
+                    <% } else { %>—<% } %>
+                  </td>
+                </tr>
+              <% }) %>
+            </tbody>
+          </table>
+        <% } %>
+      </div>
+    </div>
+  </div>
+</section>
+
+<%- include('../../partials/footer') %>

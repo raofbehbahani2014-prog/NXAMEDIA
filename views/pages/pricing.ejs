@@ -1,0 +1,31 @@
+<%- include('../partials/header') %>
+
+<section class="hero" style="padding:60px 0;">
+  <div class="container">
+    <div class="breadcrumb"><a href="/">خانه</a> / تعرفه خدمات</div>
+    <h1>تعرفه <span class="highlight">خدمات</span> NxMedia</h1>
+    <p>پکیج‌های شفاف و متناسب با نیاز کسب‌وکار شما — بدون هزینه پنهان.</p>
+  </div>
+</section>
+
+<section>
+  <div class="container">
+    <div class="grid grid-3">
+      <% pricing.forEach(p => { %>
+        <div class="price-card <%= (p.highlight === 'yes' || p.highlight === true) ? 'highlight' : '' %>">
+          <h3><%= p.name %></h3>
+          <div class="price"><%= p.price %></div>
+          <ul>
+            <% p.features.forEach(f => { %>
+              <li>✔️ <%= f %></li>
+            <% }) %>
+          </ul>
+          <a href="/order/package/<%= p.id %>" class="btn <%= (p.highlight === 'yes' || p.highlight === true) ? 'btn-primary' : 'btn-outline' %>" style="width:100%; text-align:center;"><%= amountOf(p) ? 'سفارش این پکیج' : 'درخواست مشاوره و قیمت' %></a>
+        </div>
+      <% }) %>
+    </div>
+    <p style="text-align:center; color:var(--gray); margin-top:30px;">قیمت‌های دقیق پس از بررسی نیاز شما در جلسه مشاوره نهایی می‌شود.</p>
+  </div>
+</section>
+
+<%- include('../partials/footer') %>

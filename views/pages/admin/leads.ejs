@@ -1,0 +1,96 @@
+<%- include('../../partials/admin-header', { active: 'leads' }) %>
+
+<div class="admin-topbar">
+  <h1>📥 درخواست‌های دریافتی</h1>
+</div>
+
+<div class="admin-card" id="service-orders" style="margin-bottom:20px; border-color:#F59E0B;">
+  <h3 style="margin-top:0;">سفارش خدمات و پکیج‌ها: در انتظار هماهنگی (<%= serviceOrders.length %>)</h3>
+  <p class="hint">بعد از هماهنگی با مشتری: روی «مدیریت پنل» بزن، در بخش فاکتورها مبلغ نهایی را بنویس و وضعیت را «در انتظار پرداخت» کن. مشتری اعلان می‌گیرد و می‌تواند پرداخت کند.</p>
+  <% if (!serviceOrders.length) { %>
+    <p style="color:var(--gray);">موردی در انتظار نیست.</p>
+  <% } else { %>
+    <table>
+      <thead><tr><th>مشتری</th><th>سفارش</th><th>مبلغ پیشنهادی</th><th>توضیح مشتری</th><th>تاریخ</th><th></th></tr></thead>
+      <tbody>
+        <% serviceOrders.slice().reverse().forEach(i => { %>
+          <tr>
+            <td><%= i.user.name %><br><span style="font-size:11px; color:var(--gray);" dir="ltr"><%= i.user.email %></span></td>
+            <td><%= i.title %></td>
+            <td><%= i.amount ? fmtMoney(i.amount) + ' تومان' : 'تعیین نشده' %></td>
+            <td style="font-size:12px;"><%= i.customerNote || '-' %></td>
+            <td style="font-size:12px;"><%= fmtDate(i.createdAt) %></td>
+            <td><a href="/admin/users/<%= i.userId %>#sec-invoices" class="btn btn-primary btn-sm">مدیریت</a></td>
+          </tr>
+        <% }) %>
+      </tbody>
+    </table>
+  <% } %>
+</div>
+
+<div class="admin-card" style="margin-bottom:20px;">
+  <h3 style="margin-top:0;">درخواست‌های پروژه (<%= leads.projectRequests.length %>)</h3>
+  <% if (!leads.projectRequests.length) { %>
+    <p style="color:var(--gray);">موردی ثبت نشده است.</p>
+  <% } else { %>
+    <table>
+      <thead><tr><th>نام</th><th>تماس</th><th>خدمت</th><th>تاریخ</th></tr></thead>
+      <tbody>
+        <% leads.projectRequests.slice().reverse().forEach(l => { %>
+          <tr><td><%= l.name || '-' %></td><td><%= l.phone || '-' %></td><td><%= l.service || '-' %></td><td style="font-size:11px; color:var(--gray);"><%= l.date || '-' %></td></tr>
+        <% }) %>
+      </tbody>
+    </table>
+  <% } %>
+</div>
+
+<div class="admin-card" style="margin-bottom:20px;">
+  <h3 style="margin-top:0;">علاقه‌مندان به دوره‌ها (<%= leads.courseInterests.length %>)</h3>
+  <p class="hint">این‌ها افرادی هستند که فرم «اطلاع از شروع ثبت‌نام» را پر کرده‌اند. خریدهای واقعی دوره‌ها در «سفارش‌ها و پرداخت‌ها» و صفحه هر مشتری دیده می‌شود.</p>
+  <% if (!leads.courseInterests.length) { %>
+    <p style="color:var(--gray);">موردی ثبت نشده است.</p>
+  <% } else { %>
+    <table>
+      <thead><tr><th>نام</th><th>تماس</th><th>دوره</th><th>تاریخ</th></tr></thead>
+      <tbody>
+        <% leads.courseInterests.slice().reverse().forEach(l => { %>
+          <tr><td><%= l.name || '-' %></td><td><%= l.phone || '-' %></td><td><%= (l.service || '').replace(/^[^:]*:\s*/, '') %></td><td style="font-size:11px; color:var(--gray);"><%= l.date || '-' %></td></tr>
+        <% }) %>
+      </tbody>
+    </table>
+  <% } %>
+</div>
+
+<div class="admin-card" style="margin-bottom:20px;">
+  <h3 style="margin-top:0;">رزروهای مشاوره (<%= leads.consultations.length %>)</h3>
+  <% if (!leads.consultations.length) { %>
+    <p style="color:var(--gray);">موردی ثبت نشده است.</p>
+  <% } else { %>
+    <table>
+      <thead><tr><th>نام</th><th>تماس</th><th>تاریخ پیشنهادی</th><th>ثبت‌شده در</th></tr></thead>
+      <tbody>
+        <% leads.consultations.slice().reverse().forEach(l => { %>
+          <tr><td><%= l.name || '-' %></td><td><%= l.phone || '-' %></td><td><%= l.date || '-' %> <%= l.time || '' %></td><td style="font-size:11px; color:var(--gray);"><%= l.createdAt || '-' %></td></tr>
+        <% }) %>
+      </tbody>
+    </table>
+  <% } %>
+</div>
+
+<div class="admin-card">
+  <h3 style="margin-top:0;">پیام‌های تماس با ما (<%= leads.contact.length %>)</h3>
+  <% if (!leads.contact.length) { %>
+    <p style="color:var(--gray);">موردی ثبت نشده است.</p>
+  <% } else { %>
+    <table>
+      <thead><tr><th>نام</th><th>تماس</th><th>پیام</th><th>تاریخ</th></tr></thead>
+      <tbody>
+        <% leads.contact.slice().reverse().forEach(l => { %>
+          <tr><td><%= l.name || '-' %></td><td><%= l.phone || '-' %></td><td><%= l.message || '-' %></td><td style="font-size:11px; color:var(--gray);"><%= l.date || '-' %></td></tr>
+        <% }) %>
+      </tbody>
+    </table>
+  <% } %>
+</div>
+
+<%- include('../../partials/admin-footer') %>

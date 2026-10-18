@@ -1,0 +1,32 @@
+<%- include('../partials/header') %>
+
+<section class="hero" style="padding:60px 0;">
+  <div class="container">
+    <div class="breadcrumb"><a href="/">خانه</a> / نمونه‌کارها</div>
+    <h1>نمونه‌کارها و <span class="highlight">پروژه‌های انجام‌شده</span></h1>
+    <p>مروری بر برخی از پروژه‌هایی که با افتخار برای برندهای مختلف انجام داده‌ایم.</p>
+  </div>
+</section>
+
+<section>
+  <div class="container">
+    <div class="grid grid-4">
+      <% portfolio.forEach(p => { %>
+        <a href="/portfolio/<%= p.slug %>" class="portfolio-card">
+          <% if (p.cover) { %>
+            <div class="cover" style="background-image:url('<%= p.cover %>'); background-size:cover; background-position:center;"></div>
+          <% } else { %>
+            <div class="cover">🎬</div>
+          <% } %>
+          <div class="body">
+            <div class="tag"><%= p.category %></div>
+            <h3><%= p.title %></h3>
+            <p style="font-size:13px; color:var(--gray);"><%= p.summary %></p>
+          </div>
+        </a>
+      <% }) %>
+    </div>
+  </div>
+</section>
+
+<%- include('../partials/footer') %>

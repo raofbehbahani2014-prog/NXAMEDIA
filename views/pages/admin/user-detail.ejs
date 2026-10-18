@@ -1,0 +1,112 @@
+<%- include('../../partials/admin-header', { active: 'users' }) %>
+
+<div class="admin-topbar">
+  <h1>👤 <%= user.name %></h1>
+  <a href="/admin/users/all" class="btn btn-outline">← بازگشت به مشتریان</a>
+</div>
+
+<div class="admin-card" style="margin-bottom:20px; display:flex; gap:30px; flex-wrap:wrap; font-size:14px;">
+  <div><span style="color:var(--gray)">ایمیل:</span> <span dir="ltr"><%= user.email %></span></div>
+  <div><span style="color:var(--gray)">تلفن:</span> <%= user.phone || '-' %></div>
+  <div><span style="color:var(--gray)">ثبت‌نام:</span> <%= new Date(user.createdAt).toLocaleDateString('fa-IR') %></div>
+</div>
+
+<% if (msg) { %><div class="success-msg"><%= msg %></div><% } %>
+<% if (err) { %><div class="error-msg"><%= err %></div><% } %>
+
+<p class="hint" style="margin-bottom:16px;">هر چیزی که در این صفحه ثبت یا ویرایش کنید، بلافاصله در پنل همین مشتری نمایش داده می‌شود.</p>
+
+<div class="admin-card" id="sec-orders" style="margin-bottom:24px;">
+  <h3 style="margin-top:0;">🛒 خریدها و پرداخت‌های این مشتری (<%= orders.length %>)</h3>
+  <% if (!orders.length) { %>
+    <p style="color:var(--gray); font-size:13px;">هنوز خریدی ثبت نشده است.</p>
+  <% } else { %>
+    <table>
+      <thead><tr><th>تاریخ</th><th>محصول</th><th>مبلغ</th><th>روش</th><th>وضعیت</th></tr></thead>
+      <tbody>
+        <% orders.forEach(o => { %>
+          <tr><td style="font-size:12px;"><%= fmtDate(o.createdAt) %></td><td><%= o.title %></td><td><%= fmtMoney(o.amount) %> تومان</td><td><%= orderMethod[o.method] || o.method %></td><td><b><%= orderStatus[o.status] || o.status %></b></td></tr>
+        <% }) %>
+      </tbody>
+    </table>
+    <p class="hint" style="margin-top:10px;"><a href="/admin/orders" style="color:var(--primary);">رفتن به بررسی رسیدها و تایید پرداخت ←</a></p>
+  <% } %>
+</div>
+
+<% Object.keys(sections).forEach(key => { const conf = sections[key]; const items = data[key]; %>
+  <div class="admin-card" id="sec-<%= key %>" style="margin-bottom:24px;">
+    <h3 style="margin-top:0;"><%= conf.icon %> <%= conf.title %> (<%= items.length %>)</h3>
+
+    <!-- فرم افزودن -->
+    <form action="/admin/users/<%= user.id %>/<%= key %>/add" method="POST" enctype="multipart/form-data"
+          style="background:#F8F6FC; border-radius:12px; padding:14px; margin-bottom:16px;">
+      <div style="font-size:13px; font-weight:700; margin-bottom:10px;">+ افزودن مورد جدید</div>
+      <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(170px,1fr)); gap:10px;">
+        <% conf.cols.forEach(c => { %>
+          <div class="form-group" style="margin:0;">
+            <label style="font-size:12px;"><%= c.label %><%= (c.required || c.requiredFile) ? ' *' : '' %></label>
+            <% if (c.type === 'select') { %>
+              <select name="<%= c.name %>"><% c.options.forEach(o => { %><option><%= o %></option><% }) %></select>
+            <% } else if (c.type === 'file') { %>
+              <input type="file" name="file" <%= c.requiredFile ? 'required' : '' %>>
+            <% } else { %>
+              <input type="<%= c.type === 'number' ? 'text' : c.type %>" name="<%= c.name %>" <%= c.required ? 'required' : '' %>>
+            <% } %>
+          </div>
+        <% }) %>
+      </div>
+      <button type="submit" class="btn btn-primary btn-sm" style="margin-top:12px;">افزودن</button>
+    </form>
+
+    <!-- لیست آیتم‌ها -->
+    <% if (!items.length) { %>
+      <p style="color:var(--gray); font-size:13px;">هنوز موردی ثبت نشده است.</p>
+    <% } %>
+    <% items.forEach(it => { %>
+      <div style="border:1px solid var(--border); border-radius:12px; padding:12px; margin-bottom:10px;">
+        <form action="/admin/users/<%= user.id %>/<%= key %>/<%= it.id %>/edit" method="POST" enctype="multipart/form-data">
+          <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(170px,1fr)); gap:10px;">
+            <% conf.cols.forEach(c => { %>
+              <div class="form-group" style="margin:0;">
+                <label style="font-size:12px;"><%= c.label %></label>
+                <% if (c.type === 'select') { %>
+                  <select name="<%= c.name %>"><% c.options.forEach(o => { %><option <%= it[c.name] === o ? 'selected' : '' %>><%= o %></option><% }) %></select>
+                <% } else if (c.type === 'file') { %>
+                  <% if (it[c.name]) { %>
+                    <a href="<%= it[c.name] %>" target="_blank" style="font-size:12px; color:var(--primary);">مشاهده فایل فعلی</a>
+                  <% } %>
+                  <input type="file" name="file">
+                <% } else { %>
+                  <input type="<%= c.type === 'number' ? 'text' : c.type %>" name="<%= c.name %>" value="<%= it[c.name] !== undefined ? it[c.name] : '' %>">
+                <% } %>
+              </div>
+            <% }) %>
+          </div>
+          <% if (key === 'content' && it.clientNote) { %>
+            <p style="font-size:12px; background:#FEF3C7; color:#92400E; padding:8px 10px; border-radius:8px; margin:10px 0 0;">💬 بازخورد مشتری: <%= it.clientNote %></p>
+          <% } %>
+          <% if (key === 'invoices' && it.customerNote) { %>
+            <p style="font-size:12px; background:#FEF3C7; color:#92400E; padding:8px 10px; border-radius:8px; margin:10px 0 0;">💬 توضیح مشتری: <%= it.customerNote %></p>
+          <% } %>
+          <% if (key === 'files') { %>
+            <p class="hint">ارسال‌کننده: <%= it.by === 'client' ? 'مشتری' : 'تیم' %></p>
+          <% } %>
+          <div style="display:flex; gap:8px; margin-top:10px;">
+            <button type="submit" class="btn btn-outline btn-sm">ذخیره تغییرات</button>
+            <button type="submit" class="btn btn-danger btn-sm" formaction="/admin/users/<%= user.id %>/<%= key %>/<%= it.id %>/delete" formmethod="POST" formenctype="application/x-www-form-urlencoded" formnovalidate onclick="return confirm('این مورد حذف شود؟');">حذف</button>
+          </div>
+        </form>
+      </div>
+    <% }) %>
+  </div>
+<% }) %>
+
+<div class="admin-card" style="border-color:#FCA5A5;">
+  <h3 style="margin-top:0; color:#B91C1C;">حذف حساب مشتری</h3>
+  <p class="hint">با حذف حساب، همه پروژه‌ها، فایل‌ها و فاکتورهای این مشتری هم پاک می‌شود.</p>
+  <form class="confirm-delete" action="/admin/users/<%= user.id %>/delete" method="POST">
+    <button type="submit" class="btn btn-danger">حذف کامل این مشتری</button>
+  </form>
+</div>
+
+<%- include('../../partials/admin-footer') %>

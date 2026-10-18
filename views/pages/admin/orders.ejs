@@ -1,0 +1,79 @@
+<%- include('../../partials/admin-header', { active: 'orders' }) %>
+
+<div class="admin-topbar"><h1>🧾 سفارش‌ها و پرداخت‌ها</h1></div>
+
+<% if (msg) { %><div class="success-msg"><%= msg %></div><% } %>
+
+<div class="tabs">
+  <a href="/admin/orders" class="<%= !status ? 'active' : '' %>">همه</a>
+  <% Object.keys(orderStatus).forEach(k => { %>
+    <a href="/admin/orders?status=<%= k %>" class="<%= status === k ? 'active' : '' %>"><%= orderStatus[k] %> (<%= counts[k] %>)</a>
+  <% }) %>
+</div>
+
+<div class="admin-card" style="overflow-x:auto; margin-bottom:24px;">
+  <% if (!orders.length) { %>
+    <p style="color:var(--gray); text-align:center; padding:30px 0;">سفارشی وجود ندارد.</p>
+  <% } else { %>
+    <table>
+      <thead><tr><th>تاریخ</th><th>مشتری</th><th>محصول</th><th>مبلغ</th><th>روش</th><th>وضعیت</th><th>رسید / جزئیات</th><th style="width:220px;">عملیات</th></tr></thead>
+      <tbody>
+        <% orders.forEach(o => { %>
+          <tr>
+            <td style="font-size:12px;"><%= fmtDate(o.createdAt) %></td>
+            <td><a href="/admin/users/<%= o.userId %>" style="color:var(--primary);"><%= o.user.name %></a><br><span style="font-size:11px; color:var(--gray);" dir="ltr"><%= o.user.email %></span></td>
+            <td><%= o.title %><br><span style="font-size:11px; color:var(--gray);"><%= o.type === 'course' ? 'دوره' : o.type === 'asset' ? 'فیچر' : 'فاکتور' %></span></td>
+            <td><%= fmtMoney(o.amount) %> تومان</td>
+            <td><%= orderMethod[o.method] || o.method %></td>
+            <td><b><%= orderStatus[o.status] || o.status %></b></td>
+            <td style="font-size:12px;">
+              <% if (o.receiptFile) { %><a href="/admin/orders/<%= o.id %>/receipt" target="_blank" style="color:var(--primary);">مشاهده رسید</a><br><% } %>
+              <% if (o.trackingCode) { %>کد پیگیری: <%= o.trackingCode %><br><% } %>
+              <% if (o.refId) { %>شماره مرجع: <%= o.refId %><br><% } %>
+              <% if (o.note) { %><%= o.note %><br><% } %>
+              <% if (o.adminNote) { %>یادداشت ادمین: <%= o.adminNote %><% } %>
+            </td>
+            <td>
+              <% if (o.status === 'awaiting_review') { %>
+                <form action="/admin/orders/<%= o.id %>/approve" method="POST" style="margin-bottom:6px;">
+                  <button class="btn btn-primary btn-sm">✅ تایید و فعال‌سازی</button>
+                </form>
+                <form action="/admin/orders/<%= o.id %>/reject" method="POST" style="display:flex; gap:4px;">
+                  <input type="text" name="note" placeholder="دلیل رد" style="flex:1; padding:5px 8px; border:1px solid var(--border); border-radius:8px; font-size:12px;">
+                  <button class="btn btn-danger btn-sm">رد</button>
+                </form>
+              <% } else if (['pending', 'failed', 'rejected'].includes(o.status)) { %>
+                <form action="/admin/orders/<%= o.id %>/approve" method="POST" onsubmit="return confirm('این سفارش دستی تایید و دسترسی فعال شود؟');">
+                  <button class="btn btn-outline btn-sm">تایید دستی</button>
+                </form>
+              <% } else { %>—<% } %>
+            </td>
+          </tr>
+        <% }) %>
+      </tbody>
+    </table>
+  <% } %>
+</div>
+
+<div class="admin-card">
+  <h3 style="margin-top:0;">اعطای دستی دسترسی (پرداخت نقدی، هدیه و...)</h3>
+  <form action="/admin/orders/grant" method="POST" style="display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:10px; align-items:end;">
+    <div class="form-group" style="margin:0;"><label>مشتری</label>
+      <select name="userId" required><% users.forEach(u => { %><option value="<%= u.id %>"><%= u.name %> (<%= u.email %>)</option><% }) %></select></div>
+    <div class="form-group" style="margin:0;"><label>محصول</label>
+      <select name="itemKey" id="grant-item" required>
+        <% courses.forEach(c => { %><option value="course|<%= c.slug %>">دوره: <%= c.title %></option><% }) %>
+        <% assets.forEach(a => { %><option value="asset|<%= a.slug %>">فیچر: <%= a.title %></option><% }) %>
+      </select>
+      <input type="hidden" name="type"><input type="hidden" name="itemId"></div>
+    <button type="submit" class="btn btn-primary">فعال‌سازی دسترسی</button>
+  </form>
+  <script>
+    document.querySelector('form[action="/admin/orders/grant"]').addEventListener('submit', function (e) {
+      var v = this.itemKey.value.split('|');
+      this.type.value = v[0]; this.itemId.value = v.slice(1).join('|');
+    });
+  </script>
+</div>
+
+<%- include('../../partials/admin-footer') %>

@@ -1,0 +1,57 @@
+<%- include('../../partials/admin-header') %>
+
+<div class="admin-topbar">
+  <h1>داشبورد مدیریت</h1>
+</div>
+
+<div class="admin-grid admin-grid-4" style="margin-bottom:28px;">
+  <div class="stat-tile" style="<%= coordOrders ? 'border-color:#F59E0B;' : '' %>">
+    <strong><%= coordOrders %></strong>
+    <span>سفارش خدمت در انتظار هماهنگی</span>
+    <div style="margin-top:8px;"><a href="/admin/leads/all#service-orders">بررسی ←</a></div>
+  </div>
+  <div class="stat-tile" style="<%= pendingOrders ? 'border-color:#F59E0B;' : '' %>">
+    <strong><%= pendingOrders %></strong>
+    <span>رسید در انتظار بررسی</span>
+    <div style="margin-top:8px;"><a href="/admin/orders?status=awaiting_review">بررسی ←</a></div>
+  </div>
+  <div class="stat-tile">
+    <strong><%= leadCounts.projectRequests %></strong>
+    <span>درخواست پروژه جدید</span>
+    <div style="margin-top:8px;"><a href="/admin/leads/all">مشاهده ←</a></div>
+  </div>
+  <div class="stat-tile">
+    <strong><%= leadCounts.consultations %></strong>
+    <span>رزرو مشاوره</span>
+    <div style="margin-top:8px;"><a href="/admin/leads/all">مشاهده ←</a></div>
+  </div>
+  <div class="stat-tile">
+    <strong><%= leadCounts.contact %></strong>
+    <span>پیام تماس با ما</span>
+    <div style="margin-top:8px;"><a href="/admin/leads/all">مشاهده ←</a></div>
+  </div>
+  <div class="stat-tile">
+    <strong><%= mediaCount %></strong>
+    <span>فایل در کتابخانه رسانه</span>
+    <div style="margin-top:8px;"><a href="/admin/media">مشاهده ←</a></div>
+  </div>
+</div>
+
+<div class="admin-card" style="margin-bottom:24px;">
+  <h3 style="margin-top:0;">🛠️ ویرایش سریع متن‌ها و تصاویر سایت</h3>
+  <p style="color:var(--gray); font-size:13px;">تمام متن‌های هدر، هیرو، فوتر، دکمه‌ها و اطلاعات تماس از این بخش قابل ویرایش است.</p>
+  <a href="/admin/site-settings" class="btn btn-primary">ورود به ویرایش متن‌ها</a>
+</div>
+
+<h3 style="margin-bottom:14px;">مدیریت بخش‌های محتوایی</h3>
+<div class="admin-grid admin-grid-3">
+  <% Object.keys(collections).forEach(key => { %>
+    <a href="/admin/<%= key %>" class="admin-card" style="display:block;">
+      <div style="font-size:26px; margin-bottom:8px;"><%= collections[key].icon %></div>
+      <h3 style="margin:0 0 4px;"><%= collections[key].label %></h3>
+      <p style="color:var(--gray); font-size:13px; margin:0;"><%= counts[key] %> مورد ثبت‌شده</p>
+    </a>
+  <% }) %>
+</div>
+
+<%- include('../../partials/admin-footer') %>

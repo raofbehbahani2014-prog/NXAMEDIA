@@ -1,0 +1,32 @@
+<%- include('../partials/header') %>
+
+<section class="hero" style="padding:50px 0; text-align:center;">
+  <div class="container">
+    <div class="breadcrumb"><a href="/">خانه</a> / <a href="/store">فروشگاه فیچرها</a> / <%= asset.title %></div>
+    <div class="tag-sm"><%= asset.category %></div>
+    <h1><%= asset.title %></h1>
+    <p style="margin:0 auto;"><%= asset.summary %></p>
+  </div>
+</section>
+
+<section>
+  <div class="container grid grid-2" style="align-items:start;">
+    <div>
+      <% if (asset.cover) { %>
+        <img loading="lazy" src="<%= asset.cover %>" alt="<%= asset.title %>" style="width:100%; border-radius:16px; margin-bottom:20px;">
+      <% } %>
+      <% if (asset.format) { %><p><b>فرمت فایل‌ها:</b> <%= asset.format %></p><% } %>
+      <% if ((asset.features || []).length) { %>
+        <h2 style="font-size:20px; margin:16px 0;">این پکیج شامل چیست؟</h2>
+        <ul style="display:flex; flex-direction:column; gap:10px;">
+          <% asset.features.forEach(f => { %>
+            <li style="background:#fff; border:1px solid var(--border); border-radius:12px; padding:12px 16px;">✅ <%= f %></li>
+          <% }) %>
+        </ul>
+      <% } %>
+    </div>
+    <%- include('../partials/buy-box', { type: 'asset', id: asset.slug, amount: amount, access: access, sellable: sellable, missingFile: (typeof missingFile !== 'undefined' && missingFile), demoFile: asset.demoFile || '' }) %>
+  </div>
+</section>
+
+<%- include('../partials/footer') %>

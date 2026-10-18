@@ -1,0 +1,159 @@
+<%- include('../../partials/admin-header', { active: 'site-settings' }) %>
+
+<div class="admin-topbar">
+  <h1>🛠️ متن‌ها و تنظیمات سایت</h1>
+</div>
+
+<% if (typeof saved !== 'undefined' || (typeof query !== 'undefined')) { } %>
+
+<div class="admin-card">
+  <div class="tabs">
+    <a href="#" data-tab="tab-general" class="active">عمومی و لوگو</a>
+    <a href="#" data-tab="tab-nav">منو و دکمه‌ها</a>
+    <a href="#" data-tab="tab-hero">هیرو صفحه اصلی</a>
+    <a href="#" data-tab="tab-about">درباره ما</a>
+    <a href="#" data-tab="tab-contact">اطلاعات تماس</a>
+    <a href="#" data-tab="tab-footer">فوتر</a>
+    <a href="#" data-tab="tab-cta">بنر تبلیغاتی (CTA)</a>
+    <a href="#" data-tab="tab-seo">سئو و آنالیتیکس</a>
+    <a href="#" data-tab="tab-pay">پرداخت</a>
+  </div>
+
+  <form action="/admin/site-settings" method="POST">
+
+    <div class="tab-panel" id="tab-general">
+      <div class="form-section-title">نام سایت و لوگو</div>
+      <div class="form-group"><label>نام سایت</label><input type="text" name="site[siteName]" value="<%= site.siteName %>"></div>
+      <div class="form-group"><label>بخش اول لوگو (مثلا Nx)</label><input type="text" name="site[logoText1]" value="<%= site.logoText1 %>"></div>
+      <div class="form-group"><label>بخش دوم لوگو (مثلا Media)</label><input type="text" name="site[logoText2]" value="<%= site.logoText2 %>"></div>
+    </div>
+
+    <div class="tab-panel" id="tab-nav" style="display:none;">
+      <div class="form-section-title">عنوان آیتم‌های منو</div>
+      <div class="form-group"><label>خانه</label><input type="text" name="site[navLabels][home]" value="<%= site.navLabels.home %>"></div>
+      <div class="form-group"><label>خدمات</label><input type="text" name="site[navLabels][services]" value="<%= site.navLabels.services %>"></div>
+      <div class="form-group"><label>نمونه‌کارها</label><input type="text" name="site[navLabels][portfolio]" value="<%= site.navLabels.portfolio %>"></div>
+      <div class="form-group"><label>آموزش</label><input type="text" name="site[navLabels][education]" value="<%= site.navLabels.education %>"></div>
+      <div class="form-group"><label>دوره‌ها</label><input type="text" name="site[navLabels][courses]" value="<%= site.navLabels.courses %>"></div>
+      <div class="form-group"><label>درباره ما</label><input type="text" name="site[navLabels][about]" value="<%= site.navLabels.about %>"></div>
+      <div class="form-group"><label>وبلاگ</label><input type="text" name="site[navLabels][blog]" value="<%= site.navLabels.blog %>"></div>
+      <div class="form-group"><label>تماس با ما</label><input type="text" name="site[navLabels][contact]" value="<%= site.navLabels.contact %>"></div>
+      <div class="form-group"><label>فروشگاه فیچرها</label><input type="text" name="site[navLabels][store]" value="<%= site.navLabels.store || 'فروشگاه ادیت' %>"></div>
+
+      <div class="form-section-title">متن دکمه‌ها</div>
+      <div class="form-group"><label>دکمه رزرو مشاوره</label><input type="text" name="site[buttons][consultation]" value="<%= site.buttons.consultation %>"></div>
+      <div class="form-group"><label>دکمه درخواست پروژه</label><input type="text" name="site[buttons][requestProject]" value="<%= site.buttons.requestProject %>"></div>
+      <div class="form-group"><label>دکمه ورود مشتری</label><input type="text" name="site[buttons][clientLogin]" value="<%= site.buttons.clientLogin %>"></div>
+      <div class="form-group"><label>دکمه پنل مشتری (پس از ورود)</label><input type="text" name="site[buttons][clientPanel]" value="<%= site.buttons.clientPanel %>"></div>
+    </div>
+
+    <div class="tab-panel" id="tab-hero" style="display:none;">
+      <div class="form-section-title">بخش هیرو (بالای صفحه اصلی)</div>
+      <div class="form-group"><label>تیتر بخش اول</label><input type="text" name="site[hero][title1]" value="<%= site.hero.title1 %>"></div>
+      <div class="form-group"><label>کلمه هایلایت‌شده (رنگی)</label><input type="text" name="site[hero][titleHighlight]" value="<%= site.hero.titleHighlight %>"></div>
+      <div class="form-group"><label>تیتر بخش دوم</label><input type="text" name="site[hero][title2]" value="<%= site.hero.title2 %>"></div>
+      <div class="form-group"><label>توضیح زیر تیتر</label><textarea name="site[hero][subtitle]"><%= site.hero.subtitle %></textarea></div>
+
+      <div class="form-group">
+        <label>ویدئوی هیرو (اختیاری)</label>
+        <div class="field-upload" data-type="video">
+          <input type="hidden" name="site[hero][videoUrl]" value="<%= site.hero.videoUrl || '' %>">
+          <div class="upload-box"><input type="file" accept="video/*"><p class="hint">برای آپلود ویدئوی معرفی کلیک کنید</p></div>
+          <div class="upload-preview"></div>
+        </div>
+      </div>
+
+      <div style="display:flex; gap:12px;">
+        <div class="form-group" style="flex:1;"><label>عدد آمار ۱</label><input type="text" name="site[hero][stat1Value]" value="<%= site.hero.stat1Value %>"></div>
+        <div class="form-group" style="flex:1;"><label>برچسب آمار ۱</label><input type="text" name="site[hero][stat1Label]" value="<%= site.hero.stat1Label %>"></div>
+      </div>
+      <div style="display:flex; gap:12px;">
+        <div class="form-group" style="flex:1;"><label>عدد آمار ۲</label><input type="text" name="site[hero][stat2Value]" value="<%= site.hero.stat2Value %>"></div>
+        <div class="form-group" style="flex:1;"><label>برچسب آمار ۲</label><input type="text" name="site[hero][stat2Label]" value="<%= site.hero.stat2Label %>"></div>
+      </div>
+      <div style="display:flex; gap:12px;">
+        <div class="form-group" style="flex:1;"><label>عدد آمار ۳</label><input type="text" name="site[hero][stat3Value]" value="<%= site.hero.stat3Value %>"></div>
+        <div class="form-group" style="flex:1;"><label>برچسب آمار ۳</label><input type="text" name="site[hero][stat3Label]" value="<%= site.hero.stat3Label %>"></div>
+      </div>
+    </div>
+
+    <div class="tab-panel" id="tab-about" style="display:none;">
+      <div class="form-section-title">بخش درباره ما</div>
+      <div class="form-group"><label>عنوان</label><input type="text" name="site[about][title]" value="<%= site.about.title %>"></div>
+      <div class="form-group"><label>پاراگراف اول</label><textarea name="site[about][text1]"><%= site.about.text1 %></textarea></div>
+      <div class="form-group"><label>پاراگراف دوم</label><textarea name="site[about][text2]"><%= site.about.text2 %></textarea></div>
+      <div style="display:flex; gap:12px; flex-wrap:wrap;">
+        <div class="form-group" style="flex:1; min-width:140px;"><label>آمار ۱ عدد</label><input type="text" name="site[about][stat1Value]" value="<%= site.about.stat1Value %>"></div>
+        <div class="form-group" style="flex:1; min-width:140px;"><label>آمار ۱ برچسب</label><input type="text" name="site[about][stat1Label]" value="<%= site.about.stat1Label %>"></div>
+        <div class="form-group" style="flex:1; min-width:140px;"><label>آمار ۲ عدد</label><input type="text" name="site[about][stat2Value]" value="<%= site.about.stat2Value %>"></div>
+        <div class="form-group" style="flex:1; min-width:140px;"><label>آمار ۲ برچسب</label><input type="text" name="site[about][stat2Label]" value="<%= site.about.stat2Label %>"></div>
+      </div>
+    </div>
+
+    <div class="tab-panel" id="tab-contact" style="display:none;">
+      <div class="form-section-title">اطلاعات تماس</div>
+      <div class="form-group"><label>شماره تلفن</label><input type="text" name="site[contact][phone]" value="<%= site.contact.phone %>"></div>
+      <div class="form-group"><label>شماره واتساپ</label><input type="text" name="site[contact][whatsapp]" value="<%= site.contact.whatsapp %>"></div>
+      <div class="form-group"><label>ایمیل</label><input type="text" name="site[contact][email]" value="<%= site.contact.email %>"></div>
+      <div class="form-group"><label>لینک اینستاگرام</label><input type="text" name="site[contact][instagramUrl]" value="<%= site.contact.instagramUrl %>"></div>
+      <div class="form-group"><label>لینک واتساپ</label><input type="text" name="site[contact][whatsappUrl]" value="<%= site.contact.whatsappUrl %>"></div>
+      <div class="form-group"><label>لینک تلگرام</label><input type="text" name="site[contact][telegramUrl]" value="<%= site.contact.telegramUrl %>"></div>
+    </div>
+
+    <div class="tab-panel" id="tab-footer" style="display:none;">
+      <div class="form-section-title">فوتر سایت</div>
+      <div class="form-group"><label>توضیح کوتاه درباره مجموعه</label><textarea name="site[footer][about]"><%= site.footer.about %></textarea></div>
+      <div class="form-group"><label>عنوان بخش خبرنامه</label><input type="text" name="site[footer][newsletterTitle]" value="<%= site.footer.newsletterTitle %>"></div>
+      <div class="form-group"><label>توضیح بخش خبرنامه</label><textarea name="site[footer][newsletterText]"><%= site.footer.newsletterText %></textarea></div>
+      <div class="form-group"><label>متن کپی‌رایت</label><input type="text" name="site[footer][copyrightText]" value="<%= site.footer.copyrightText %>"></div>
+    </div>
+
+    <div class="tab-panel" id="tab-cta" style="display:none;">
+      <div class="form-section-title">بنر تبلیغاتی پایین صفحه اصلی</div>
+      <div class="form-group"><label>عنوان</label><input type="text" name="site[ctaBand][title]" value="<%= site.ctaBand.title %>"></div>
+      <div class="form-group"><label>توضیح</label><textarea name="site[ctaBand][subtitle]"><%= site.ctaBand.subtitle %></textarea></div>
+    </div>
+
+    <div class="tab-panel" id="tab-seo" style="display:none;">
+      <div class="form-section-title">تنظیمات سئو</div>
+      <div class="form-group"><label>آدرس اصلی سایت (مثلا https://nxmedia.ir)</label><input type="text" name="site[seo][siteUrl]" value="<%= (site.seo||{}).siteUrl || '' %>"><p class="hint">برای canonical و sitemap؛ بعد از دامنه‌دار شدن سایت حتماً پر شود.</p></div>
+      <div class="form-group"><label>توضیحات پیش‌فرض متا (حدود ۱۵۰ تا ۱۶۰ کاراکتر)</label><textarea name="site[seo][defaultDescription]"><%= (site.seo||{}).defaultDescription || '' %></textarea></div>
+      <div class="form-group"><label>کلمات کلیدی (با ویرگول جدا کنید)</label><input type="text" name="site[seo][keywords]" value="<%= (site.seo||{}).keywords || '' %>"></div>
+      <div class="form-group"><label>آیدی اینستاگرام (نمایش در موکاپ گوشی)</label><input type="text" name="site[seo][instagramHandle]" value="<%= (site.seo||{}).instagramHandle || '' %>"></div>
+      <div class="form-group">
+        <label>تصویر پیش‌فرض اشتراک‌گذاری (Open Graph، ابعاد ۱۲۰۰×۶۳۰)</label>
+        <div class="field-upload" data-type="image">
+          <input type="hidden" name="site[seo][ogImage]" value="<%= (site.seo||{}).ogImage || '' %>">
+          <div class="upload-box"><input type="file" accept="image/*"><p class="hint">آپلود تصویر</p></div>
+          <div class="upload-preview"></div>
+        </div>
+      </div>
+      <div class="form-section-title">گوگل</div>
+      <div class="form-group"><label>Google Analytics ID (مثلا G-XXXXXXXXXX)</label><input type="text" name="site[seo][gaId]" value="<%= (site.seo||{}).gaId || '' %>"></div>
+      <div class="form-group"><label>کد تایید Google Search Console (مقدار content متا تگ)</label><input type="text" name="site[seo][gscVerification]" value="<%= (site.seo||{}).gscVerification || '' %>"></div>
+    </div>
+
+    <div class="tab-panel" id="tab-pay" style="display:none;">
+      <% const pay = site.payment || {}; %>
+      <div class="form-section-title">درگاه پرداخت آنلاین (زرین‌پال)</div>
+      <div class="form-group"><label>نمایش گزینه درگاه</label>
+        <select name="site[payment][gatewayEnabled]"><option value="yes" <%= pay.gatewayEnabled !== 'no' ? 'selected' : '' %>>فعال</option><option value="no" <%= pay.gatewayEnabled === 'no' ? 'selected' : '' %>>غیرفعال</option></select></div>
+      <div class="form-group"><label>مرچنت‌کد (Merchant ID)</label><input type="text" name="site[payment][merchantId]" value="<%= pay.merchantId || '' %>" dir="ltr">
+        <p class="hint">بهتر است روی لیارا به‌جای اینجا در متغیر محیطی <b>ZARINPAL_MERCHANT_ID</b> بگذارید؛ اگر آنجا تنظیم شود همان استفاده می‌شود. تا مرچنت‌کد نباشد، دکمه درگاه برای کاربران غیرفعال است.</p></div>
+      <div class="form-group"><label>حالت تست (Sandbox)</label>
+        <select name="site[payment][sandbox]"><option value="no" <%= pay.sandbox !== 'yes' ? 'selected' : '' %>>خاموش (پرداخت واقعی)</option><option value="yes" <%= pay.sandbox === 'yes' ? 'selected' : '' %>>روشن (فقط تست، پولی کم نمی‌شود)</option></select></div>
+
+      <div class="form-section-title">کارت‌به‌کارت</div>
+      <div class="form-group"><label>نمایش گزینه کارت‌به‌کارت</label>
+        <select name="site[payment][cardEnabled]"><option value="yes" <%= pay.cardEnabled !== 'no' ? 'selected' : '' %>>فعال</option><option value="no" <%= pay.cardEnabled === 'no' ? 'selected' : '' %>>غیرفعال</option></select></div>
+      <div class="form-group"><label>شماره کارت</label><input type="text" name="site[payment][cardNumber]" value="<%= pay.cardNumber || '' %>" dir="ltr" placeholder="6037-xxxx-xxxx-xxxx"></div>
+      <div class="form-group"><label>نام صاحب کارت</label><input type="text" name="site[payment][cardOwner]" value="<%= pay.cardOwner || '' %>"></div>
+      <div class="form-group"><label>نام بانک</label><input type="text" name="site[payment][bankName]" value="<%= pay.bankName || '' %>"></div>
+      <div class="form-group"><label>توضیح برای کاربر</label><textarea name="site[payment][cardNote]"><%= pay.cardNote || '' %></textarea></div>
+    </div>
+
+    <button type="submit" class="btn btn-primary" style="width:100%; margin-top:16px;">ذخیره همه تغییرات</button>
+  </form>
+</div>
+
+<%- include('../../partials/admin-footer') %>

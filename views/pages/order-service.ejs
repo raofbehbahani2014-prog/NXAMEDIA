@@ -1,0 +1,35 @@
+<%- include('../partials/header') %>
+
+<section style="padding:50px 0;">
+  <div class="container" style="max-width:760px;">
+    <div class="breadcrumb"><a href="<%= o.backUrl %>">← بازگشت</a></div>
+    <h1 style="font-size:26px;">سفارش «<%= o.title %>»</h1>
+
+    <div class="card" style="margin:20px 0; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
+      <div><b><%= o.title %></b></div>
+      <div style="font-size:18px; font-weight:800; color:var(--primary-dark);">
+        <% if (amount) { %><%= o.priceText ? o.priceText + ' ' : '' %><%= fmtMoney(amount) %> تومان<% } else { %><%= priceRaw || 'قیمت پس از هماهنگی' %><% } %>
+      </div>
+    </div>
+
+    <div class="card" style="margin-bottom:20px;">
+      <h3>روند سفارش</h3>
+      <ol style="margin:10px 0 0; padding-right:20px; line-height:2.2; color:var(--gray);">
+        <li>درخواست خود را همین‌جا ثبت می‌کنید.</li>
+        <li>تیم <%= site.siteName %> با شما هماهنگ می‌کند و جزئیات و مبلغ نهایی را مشخص می‌کنیم.</li>
+        <li>فاکتور در پنل مشتری شما برای پرداخت (درگاه آنلاین یا کارت‌به‌کارت) فعال می‌شود و به شما اطلاع داده می‌شود.</li>
+      </ol>
+    </div>
+
+    <form action="/order/<%= kind %>/<%= id %>" method="POST" class="form-box" style="max-width:none;">
+      <div class="form-group">
+        <label>توضیحات یا نیاز شما (اختیاری)</label>
+        <textarea name="note" maxlength="500" placeholder="مثلا: تعداد محتوا، زمان‌بندی، آیدی پیج..."></textarea>
+      </div>
+      <button type="submit" class="btn btn-primary" style="width:100%;">ثبت درخواست و هماهنگی</button>
+      <p style="font-size:12px; color:var(--gray); text-align:center; margin-top:10px;">در این مرحله پرداختی انجام نمی‌شود.</p>
+    </form>
+  </div>
+</section>
+
+<%- include('../partials/footer') %>

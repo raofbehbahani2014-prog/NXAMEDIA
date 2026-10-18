@@ -1,0 +1,39 @@
+<%- include('../partials/header') %>
+
+<section class="hero" style="padding:60px 0;">
+  <div class="container">
+    <div class="breadcrumb"><a href="/">خانه</a> / <a href="/courses">دوره‌ها</a> / <%= course.title %></div>
+    <h1><%= course.title %></h1>
+    <p><%= course.summary %></p>
+    <p>🕒 مدت: <%= course.duration %> &nbsp; | &nbsp; 🎯 سطح: <%= course.level %> &nbsp; | &nbsp; 💰 <%= course.price %></p>
+  </div>
+</section>
+
+<section>
+  <div class="container grid grid-2">
+    <div>
+      <h2 style="font-size:22px; margin-bottom:16px;">سرفصل‌های دوره</h2>
+      <ul style="display:flex; flex-direction:column; gap:12px;">
+        <% course.syllabus.forEach(s => { %>
+          <li style="background:#fff; border:1px solid var(--border); border-radius:12px; padding:14px 18px;">📚 <%= s %></li>
+        <% }) %>
+      </ul>
+    </div>
+    <div>
+      <%- include('../partials/buy-box', { type: 'course', id: course.slug, amount: amount, access: access, sellable: sellable, missingFile: (typeof missingFile !== 'undefined' && missingFile), demoFile: course.demoFile || '' }) %>
+      <% if (!sellable && !access) { %>
+        <div class="form-box" style="margin:20px 0 0;">
+          <h3 style="margin-bottom:12px;">اطلاع از شروع ثبت‌نام</h3>
+          <form action="/request-project" method="POST">
+            <input type="hidden" name="service" value="علاقه‌مندی به دوره: <%= course.title %>">
+            <div class="form-group"><label>نام و نام خانوادگی</label><input type="text" name="name" required></div>
+            <div class="form-group"><label>شماره تماس</label><input type="text" name="phone" required></div>
+            <button type="submit" class="btn btn-primary" style="width:100%;">ثبت درخواست</button>
+          </form>
+        </div>
+      <% } %>
+    </div>
+  </div>
+</section>
+
+<%- include('../partials/footer') %>

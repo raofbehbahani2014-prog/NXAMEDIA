@@ -1,0 +1,61 @@
+<%- include('../partials/header') %>
+
+<section style="padding:50px 0;">
+  <div class="container" style="max-width:900px;">
+    <div class="breadcrumb"><a href="<%= p.backUrl %>">← بازگشت</a></div>
+    <h1 style="font-size:26px;">تکمیل پرداخت</h1>
+
+    <div class="card" style="margin:20px 0; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
+      <div><b><%= p.title %></b></div>
+      <div style="font-size:20px; font-weight:800; color:var(--primary-dark);"><%= fmtMoney(p.amount) %> تومان</div>
+    </div>
+
+    <% if (err) { %><p class="alert-err"><%= err %></p><% } %>
+    <% if (pending) { %>
+      <p class="alert-info">رسید قبلی شما ثبت شده و در حال بررسی است. بعد از تایید، دسترسی شما فعال می‌شود. می‌توانید وضعیت را در <a href="/client/purchases" style="color:var(--primary); font-weight:700;">خریدهای من</a> ببینید.</p>
+    <% } %>
+
+    <div class="grid grid-2" style="align-items:start;">
+      <!-- درگاه -->
+      <% if (cfg.gatewayEnabled) { %>
+        <div class="card">
+          <h3>💳 پرداخت آنلاین</h3>
+          <p>پرداخت امن از طریق درگاه بانکی و فعال‌سازی فوری بعد از پرداخت.</p>
+          <% if (cfg.gatewayReady) { %>
+            <form action="/checkout/<%= type %>/<%= id %>/gateway" method="POST">
+              <button type="submit" class="btn btn-primary" style="width:100%;">پرداخت با درگاه</button>
+            </form>
+          <% } else { %>
+            <button class="btn btn-ghost" style="width:100%;" disabled>درگاه به‌زودی فعال می‌شود</button>
+          <% } %>
+        </div>
+      <% } %>
+
+      <!-- کارت به کارت -->
+      <% if (cfg.cardEnabled) { %>
+        <div class="card">
+          <h3>🏦 کارت‌به‌کارت</h3>
+          <div class="card-info">
+            <div class="card-number" id="card-num" dir="ltr"><%= cfg.cardNumber %></div>
+            <% if (cfg.cardOwner) { %><div>به نام: <b><%= cfg.cardOwner %></b></div><% } %>
+            <% if (cfg.bankName) { %><div>بانک: <%= cfg.bankName %></div><% } %>
+            <button type="button" class="btn btn-ghost" style="padding:6px 14px; margin-top:8px;" onclick="navigator.clipboard.writeText(document.getElementById('card-num').textContent.replace(/[^0-9]/g,'')); this.textContent='کپی شد ✓';">کپی شماره کارت</button>
+          </div>
+          <p style="font-size:13px; color:var(--gray);"><%= cfg.cardNote %></p>
+          <form action="/checkout/<%= type %>/<%= id %>/card" method="POST" enctype="multipart/form-data">
+            <div class="form-group"><label>تصویر رسید (عکس یا PDF)</label><input type="file" name="receipt" accept="image/*,.pdf"></div>
+            <div class="form-group"><label>کد پیگیری (اختیاری اگر رسید دارید)</label><input type="text" name="trackingCode" maxlength="40"></div>
+            <div class="form-group"><label>توضیح (اختیاری)</label><input type="text" name="note" maxlength="300"></div>
+            <button type="submit" class="btn btn-primary" style="width:100%;" <%= pending ? 'disabled' : '' %>>ارسال رسید</button>
+          </form>
+        </div>
+      <% } %>
+    </div>
+
+    <% if (!cfg.gatewayEnabled && !cfg.cardEnabled) { %>
+      <p class="alert-info">در حال حاضر روش پرداختی فعال نیست. لطفاً با پشتیبانی تماس بگیرید.</p>
+    <% } %>
+  </div>
+</section>
+
+<%- include('../partials/footer') %>

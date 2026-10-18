@@ -1,0 +1,58 @@
+  <footer class="site-footer">
+    <div class="container">
+      <div class="grid grid-4">
+        <div>
+          <h4><%= site.logoText1 %><span style="color:#F472B6"><%= site.logoText2 %></span></h4>
+          <p style="font-size:14px; color:#aaa;"><%= site.footer.about %></p>
+          <div class="social-links">
+            <a href="<%= site.contact.instagramUrl %>" title="اینستاگرام">📷</a>
+            <a href="<%= site.contact.whatsappUrl %>" title="واتساپ">💬</a>
+            <a href="<%= site.contact.telegramUrl %>" title="تلگرام">✈️</a>
+          </div>
+        </div>
+        <div>
+          <h4><%= site.navLabels.services %></h4>
+          <ul>
+            <li><a href="/services/reels-production">تولید ریلز</a></li>
+            <li><a href="/services/post-production">تولید پست</a></li>
+            <li><a href="/services/content-strategy">استراتژی محتوا</a></li>
+            <li><a href="/services/page-management">مدیریت پیج</a></li>
+            <li><a href="/services">مشاهده همه خدمات</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>لینک‌های مفید</h4>
+          <ul>
+            <li><a href="/portfolio"><%= site.navLabels.portfolio %></a></li>
+            <li><a href="/courses"><%= site.navLabels.courses %></a></li>
+            <li><a href="/store"><%= site.navLabels.store || 'فروشگاه ادیت' %></a></li>
+            <li><a href="/blog"><%= site.navLabels.blog %></a></li>
+            <li><a href="/faq">سوالات متداول</a></li>
+            <li><a href="/pricing">تعرفه خدمات</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4><%= site.footer.newsletterTitle %></h4>
+          <p style="font-size:13px; color:#aaa;"><%= site.footer.newsletterText %></p>
+          <form id="newsletter-form" style="display:flex; gap:6px; margin-top:10px;">
+            <input type="email" name="email" placeholder="ایمیل شما" required
+              style="flex:1; padding:9px 10px; border-radius:8px; border:none; font-family:inherit;">
+            <button type="submit" class="btn btn-primary" style="padding:9px 16px;">عضویت</button>
+          </form>
+          <p class="form-msg" style="font-size:12px; color:#F472B6; margin-top:8px;"></p>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <div style="margin-bottom:10px;">
+          <a href="/terms">قوانین و شرایط همکاری</a> &nbsp;|&nbsp;
+          <a href="/privacy">حریم خصوصی</a> &nbsp;|&nbsp;
+          <a href="/faq">سوالات متداول</a>
+        </div>
+        © <%= new Date().getFullYear() %> <%= site.siteName %>. <%= site.footer.copyrightText %>
+      </div>
+    </div>
+  </footer>
+  <a href="<%= site.contact.instagramUrl %>" class="dm-fab" aria-label="پیام در اینستاگرام" target="_blank" rel="noopener">✉️</a>
+  <script src="/js/main.js" defer></script>
+</body>
+</html>

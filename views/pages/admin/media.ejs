@@ -1,0 +1,45 @@
+<%- include('../../partials/admin-header', { active: 'media' }) %>
+
+<div class="admin-topbar">
+  <h1>🖼️ کتابخانه رسانه</h1>
+</div>
+
+<div class="admin-card" style="margin-bottom:24px;">
+  <h3 style="margin-top:0;">آپلود فایل جدید</h3>
+  <form action="/admin/media/upload" method="POST" enctype="multipart/form-data">
+    <div class="form-group">
+      <input type="file" name="files" multiple accept="image/*,video/*" required>
+      <p class="hint">می‌توانید چند عکس یا ویدئو را همزمان انتخاب کنید (حداکثر ۳۰۰ مگابایت برای هر فایل).</p>
+    </div>
+    <button type="submit" class="btn btn-primary">آپلود فایل‌ها</button>
+  </form>
+</div>
+
+<div class="admin-card">
+  <% if (!media.length) { %>
+    <p style="color:var(--gray); text-align:center; padding:30px 0;">هنوز فایلی آپلود نشده است.</p>
+  <% } else { %>
+    <div class="admin-grid admin-grid-4">
+      <% media.forEach(m => { %>
+        <div style="border:1px solid var(--border); border-radius:12px; overflow:hidden;">
+          <% if (m.type === 'video') { %>
+            <video src="<%= m.url %>" style="width:100%; height:120px; object-fit:cover;" muted></video>
+          <% } else { %>
+            <img src="<%= m.url %>" style="width:100%; height:120px; object-fit:cover;">
+          <% } %>
+          <div style="padding:10px;">
+            <p style="font-size:11px; color:var(--gray); margin:0 0 8px; word-break:break-all;"><%= m.name %></p>
+            <div style="display:flex; gap:6px;">
+              <button type="button" class="btn btn-outline btn-sm" onclick="navigator.clipboard.writeText('<%= m.url %>'); this.textContent='کپی شد ✓';">کپی لینک</button>
+              <form class="confirm-delete" action="/admin/media/<%= m.id %>/delete" method="POST">
+                <button type="submit" class="btn btn-danger btn-sm">حذف</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      <% }) %>
+    </div>
+  <% } %>
+</div>
+
+<%- include('../../partials/admin-footer') %>

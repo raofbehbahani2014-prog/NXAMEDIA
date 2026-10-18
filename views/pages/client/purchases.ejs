@@ -1,0 +1,36 @@
+<%- include('../../partials/header') %>
+
+<section style="padding:40px 0;">
+  <div class="container">
+    <h1 style="font-size:24px;">خریدها و پرداخت‌ها</h1>
+    <div class="panel-layout" style="margin-top:24px;">
+      <%- include('../../partials/client-sidebar', { active: 'purchases' }) %>
+      <div class="panel-content">
+        <% if (ok === 'card') { %><p class="alert-info">رسید شما ثبت شد. بعد از بررسی، دسترسی شما فعال و در همین صفحه اطلاع داده می‌شود.</p><% } %>
+        <% if (!orders.length) { %>
+          <p style="color:var(--gray); text-align:center; padding:30px 0;">هنوز خریدی ثبت نشده است. <a href="/courses" style="color:var(--primary);">دوره‌ها</a> و <a href="/store" style="color:var(--primary);">فروشگاه فیچرها</a> را ببینید.</p>
+        <% } %>
+        <% orders.forEach(o => { %>
+          <div class="faq-item">
+            <div style="display:flex; justify-content:space-between; gap:10px; flex-wrap:wrap;">
+              <h3 style="margin:0;"><%= o.title %></h3>
+              <span class="status-pill st-<%= o.status %>"><%= orderStatus[o.status] || o.status %></span>
+            </div>
+            <p style="margin-top:6px;"><%= fmtMoney(o.amount) %> تومان · <%= orderMethod[o.method] || o.method %> · <%= fmtDate(o.createdAt) %></p>
+            <% if (o.status === 'paid' && (o.type === 'course' || o.type === 'asset') && o.exists) { %>
+              <a href="/download/<%= o.type %>/<%= o.itemId %>" class="btn btn-primary" style="padding:8px 18px;">⬇️ دانلود نسخه کامل</a>
+              <a href="<%= o.itemUrl %>" class="btn btn-ghost" style="padding:8px 18px;">صفحه محصول</a>
+            <% } else if (o.status === 'rejected') { %>
+              <p style="color:#B91C1C;">رسید تایید نشد<%= o.adminNote ? ': ' + o.adminNote : '' %>.</p>
+              <% if (o.exists) { %><a href="/checkout/<%= o.type %>/<%= o.itemId %>" class="btn btn-outline" style="padding:8px 18px;">ارسال مجدد رسید</a><% } %>
+            <% } else if (o.status === 'failed' || o.status === 'pending') { %>
+              <% if (o.exists) { %><a href="/checkout/<%= o.type %>/<%= o.itemId %>" class="btn btn-outline" style="padding:8px 18px;">تلاش مجدد برای پرداخت</a><% } %>
+            <% } %>
+          </div>
+        <% }) %>
+      </div>
+    </div>
+  </div>
+</section>
+
+<%- include('../../partials/footer') %>

@@ -1,0 +1,169 @@
+<%- include('../partials/header') %>
+
+<section class="hero">
+  <div class="container hero-grid">
+    <div>
+      <h1><%= site.hero.title1 %> <span class="highlight"><%= site.hero.titleHighlight %></span> <%= site.hero.title2 %></h1>
+      <p><%= site.hero.subtitle %></p>
+      <div class="hero-actions">
+        <a href="/request-project" class="btn btn-primary"><%= site.buttons.requestProject %></a>
+        <a href="/consultation" class="btn btn-outline"><%= site.buttons.consultation %></a>
+      </div>
+      <div class="hero-stats">
+        <div><strong><%= site.hero.stat1Value %></strong><span><%= site.hero.stat1Label %></span></div>
+        <div><strong><%= site.hero.stat2Value %></strong><span><%= site.hero.stat2Label %></span></div>
+        <div><strong><%= site.hero.stat3Value %></strong><span><%= site.hero.stat3Label %></span></div>
+      </div>
+    </div>
+
+    <div class="phone-wrap" aria-hidden="true">
+      <div class="phone">
+        <div class="phone-top">
+          <span class="ig-avatar"><span>Nx</span></span>
+          <strong><%= (site.seo && site.seo.instagramHandle) ? site.seo.instagramHandle : site.siteName.toLowerCase() %></strong>
+        </div>
+        <div class="phone-img">
+          <% if (site.hero.videoUrl) { %>
+            <video src="<%= site.hero.videoUrl %>" autoplay muted loop playsinline style="width:100%;height:100%;object-fit:cover;"></video>
+          <% } else { %>
+            <div class="play">▶</div>
+          <% } %>
+        </div>
+        <div class="phone-actions"><span class="heart">❤️</span><span>💬</span><span>✈️</span></div>
+        <div class="phone-likes"><b>۱۲٬۴۸۰ پسند</b><br>ریلز جدید برند شما 🎬 #تولید_محتوا</div>
+      </div>
+      <span class="float-reaction r1">❤️</span>
+      <span class="float-reaction r2">🔥</span>
+      <span class="float-reaction r3">👏</span>
+      <div class="float-badge b1">📈 +۵۰ هزار فالوور</div>
+      <div class="float-badge b2">🎬 ۲.۱M بازدید ریلز</div>
+      <div class="float-badge b3">💬 دایرکت‌های جدید</div>
+    </div>
+  </div>
+</section>
+
+<div class="marquee" aria-hidden="true">
+  <div class="marquee-track">
+    <% for (let i = 0; i < 2; i++) { %>
+      <span>#تولید_محتوا</span><span>#ریلز</span><span>#استوری</span><span>#مدیریت_پیج</span><span>#سناریونویسی</span><span>#کپشن_نویسی</span><span>#رشد_ارگانیک</span><span>#برندینگ</span><span>#آموزش_اینستاگرام</span>
+    <% } %>
+  </div>
+</div>
+
+<section style="padding:46px 0 10px;">
+  <div class="container">
+    <div class="stories">
+      <% services.forEach(s => { %>
+        <a href="/services/<%= s.slug %>" class="story">
+          <div class="ring"><span><% if (s.image) { %><img loading="lazy" src="<%= s.image %>" alt="<%= s.title %>" loading="lazy"><% } else { %><%= s.icon %><% } %></span></div>
+          <small><%= s.title.replace('تولید ', '').replace(' اینستاگرام', '') %></small>
+        </a>
+      <% }) %>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="container">
+    <div class="section-head">
+      <div class="tag">خدمات ما</div>
+      <h2>همه‌چیز برای رشد پیج شما، یک‌جا</h2>
+      <p>از تولید محتوا تا مدیریت کامل پیج و مشاوره تخصصی</p>
+    </div>
+    <div class="grid grid-3">
+      <% services.forEach(s => { %>
+        <div class="card">
+          <% if (s.image) { %>
+            <img loading="lazy" src="<%= s.image %>" alt="<%= s.title %>" style="width:100%; height:120px; object-fit:cover; border-radius:12px; margin-bottom:12px;">
+          <% } else { %>
+            <div class="icon"><%= s.icon %></div>
+          <% } %>
+          <h3><%= s.title %></h3>
+          <p><%= s.summary %></p>
+          <a class="more" href="/services/<%= s.slug %>">مشاهده جزئیات ←</a>
+        </div>
+      <% }) %>
+    </div>
+    <div style="text-align:center; margin-top:36px;">
+      <a href="/services" class="btn btn-outline">مشاهده همه خدمات</a>
+    </div>
+  </div>
+</section>
+
+<section id="packages" style="background:#fff;">
+  <div class="container">
+    <div class="section-head">
+      <div class="tag">پکیج‌ها و تعرفه</div>
+      <h2>پکیج‌های آماده برای رشد پیج شما</h2>
+      <p>پکیج مناسب را انتخاب کنید؛ بعد از هماهنگی، پرداخت از پنل مشتری انجام می‌شود.</p>
+    </div>
+    <%- include('../partials/packages', { pricing: pricing }) %>
+  </div>
+</section>
+
+<section style="background:#fff;">
+  <div class="container">
+    <div class="section-head">
+      <div class="tag">نمونه‌کارها</div>
+      <h2>چند پروژه از افتخارات ما</h2>
+    </div>
+    <div class="grid grid-4">
+      <% portfolio.forEach(p => { %>
+        <a href="/portfolio/<%= p.slug %>" class="portfolio-card">
+          <% if (p.cover) { %>
+            <div class="cover" style="background-image:url('<%= p.cover %>'); background-size:cover; background-position:center;"></div>
+          <% } else { %>
+            <div class="cover">🎬</div>
+          <% } %>
+          <div class="body">
+            <div class="tag"><%= p.category %></div>
+            <h3><%= p.title %></h3>
+          </div>
+        </a>
+      <% }) %>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="container">
+    <div class="section-head">
+      <div class="tag">نظرات مشتریان</div>
+      <h2>مشتریان ما درباره‌مان چه می‌گویند</h2>
+    </div>
+    <div class="grid grid-3">
+      <% testimonials.forEach(t => { %>
+        <div class="testimonial-card">
+          <div class="stars">★★★★★</div>
+          <p>«<%= t.text %>»</p>
+          <div class="who">
+            <% if (t.avatar) { %>
+              <img loading="lazy" src="<%= t.avatar %>" class="avatar" style="object-fit:cover;">
+            <% } else { %>
+              <div class="avatar"></div>
+            <% } %>
+            <div>
+              <strong><%= t.name %></strong>
+              <span><%= t.role %></span>
+            </div>
+          </div>
+        </div>
+      <% }) %>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="container">
+    <div class="cta-band">
+      <h2><%= site.ctaBand.title %></h2>
+      <p><%= site.ctaBand.subtitle %></p>
+      <div class="hero-actions">
+        <a href="/request-project" class="btn" style="background:#fff; color:var(--primary-dark);"><%= site.buttons.requestProject %></a>
+        <a href="/consultation" class="btn btn-outline"><%= site.buttons.consultation %></a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<%- include('../partials/footer') %>

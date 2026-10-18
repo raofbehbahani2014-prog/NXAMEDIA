@@ -1,0 +1,31 @@
+<%- include('../partials/header') %>
+
+<section class="hero" style="padding:60px 0;">
+  <div class="container">
+    <h1>نتایج جستجو برای «<%= q %>»</h1>
+    <form id="site-search-form" action="/search" method="GET" style="max-width:420px; margin:20px auto 0; display:flex; gap:8px;">
+      <input type="text" name="q" value="<%= q %>" placeholder="جستجو در سایت..."
+        style="flex:1; padding:12px 14px; border-radius:10px; border:1.5px solid var(--border);">
+      <button type="submit" class="btn btn-primary">جستجو</button>
+    </form>
+  </div>
+</section>
+
+<section>
+  <div class="container">
+    <% if (results.length) { %>
+      <div class="grid grid-3">
+        <% results.forEach(r => { %>
+          <a href="<%= r.url %>" class="card">
+            <div class="tag" style="color:var(--primary); font-weight:700; font-size:12px;"><%= r.type %></div>
+            <h3><%= r.title %></h3>
+          </a>
+        <% }) %>
+      </div>
+    <% } else { %>
+      <p style="text-align:center; color:var(--gray);">نتیجه‌ای یافت نشد. عبارت دیگری را امتحان کنید.</p>
+    <% } %>
+  </div>
+</section>
+
+<%- include('../partials/footer') %>

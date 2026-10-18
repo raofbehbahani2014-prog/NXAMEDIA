@@ -1,0 +1,54 @@
+<%- include('../partials/header') %>
+
+<section class="hero" style="padding:60px 0;">
+  <div class="container">
+    <div class="breadcrumb"><a href="/">خانه</a> / خدمات</div>
+    <h1>خدمات <span class="highlight">تولید محتوا</span> و مدیریت اینستاگرام</h1>
+    <p>از سناریونویسی و فیلم‌برداری تا مدیریت کامل پیج — هر آنچه برای رشد اینستاگرام برندتان نیاز دارید.</p>
+  </div>
+</section>
+
+<section>
+  <div class="container">
+    <div class="grid grid-3">
+      <% services.forEach(s => { %>
+        <div class="card">
+          <% if (s.image) { %>
+            <img loading="lazy" src="<%= s.image %>" alt="<%= s.title %>" style="width:100%; height:120px; object-fit:cover; border-radius:12px; margin-bottom:12px;">
+          <% } else { %>
+            <div class="icon"><%= s.icon %></div>
+          <% } %>
+          <h3><%= s.title %></h3>
+          <p><%= s.summary %></p>
+          <% if (amountOf(s)) { %><p style="font-weight:700; color:var(--primary-dark); margin:0 0 8px;"><%= s.priceNote ? s.priceNote + ' ' : '' %><%= fmtMoney(amountOf(s)) %> تومان</p><% } %>
+          <a class="more" href="/services/<%= s.slug %>">مشاهده جزئیات ←</a>
+        </div>
+      <% }) %>
+    </div>
+  </div>
+</section>
+
+<section id="packages">
+  <div class="container">
+    <div class="section-head">
+      <div class="tag">پکیج‌ها و تعرفه</div>
+      <h2>پکیج‌های آماده خدمات</h2>
+      <p>هر پکیج را انتخاب کنید، بعد از هماهنگی با تیم، از پنل مشتری پرداخت می‌کنید.</p>
+    </div>
+    <%- include('../partials/packages', { pricing: pricing }) %>
+  </div>
+</section>
+
+<section style="background:#fff;">
+  <div class="container">
+    <div class="cta-band">
+      <h2>مطمئن نیستید کدام خدمت برای شما مناسب است؟</h2>
+      <p>در یک مشاوره رایگان، بهترین مسیر را برایتان مشخص می‌کنیم.</p>
+      <div class="hero-actions">
+        <a href="/consultation" class="btn" style="background:#fff; color:var(--primary-dark);">رزرو مشاوره رایگان</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<%- include('../partials/footer') %>

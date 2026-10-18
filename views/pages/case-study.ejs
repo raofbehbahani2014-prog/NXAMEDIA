@@ -1,0 +1,53 @@
+<%- include('../partials/header') %>
+
+<section class="hero" style="padding:60px 0;">
+  <div class="container">
+    <div class="breadcrumb"><a href="/">خانه</a> / <a href="/portfolio">نمونه‌کارها</a> / <%= item.title %></div>
+    <div class="tag" style="color:var(--primary); font-weight:700;"><%= item.category %></div>
+    <h1><%= item.title %></h1>
+    <p><%= item.summary %></p>
+    <% if (item.cover) { %>
+      <img loading="lazy" src="<%= item.cover %>" alt="<%= item.title %>" style="max-width:720px; width:100%; border-radius:16px; margin-top:20px;">
+    <% } %>
+    <% if (item.video) { %>
+      <video src="<%= item.video %>" controls style="max-width:720px; width:100%; border-radius:16px; margin-top:20px;"></video>
+    <% } %>
+  </div>
+</section>
+
+<section>
+  <div class="container">
+    <div class="grid grid-3" style="margin-bottom:40px;">
+      <% item.stats.forEach(s => { %>
+        <div class="stat-box"><strong><%= s.value %></strong><span><%= s.label %></span></div>
+      <% }) %>
+    </div>
+    <div class="grid grid-2">
+      <div class="card">
+        <h3>چالش پروژه</h3>
+        <p><%= item.challenge %></p>
+      </div>
+      <div class="card">
+        <h3>راهکار NxMedia</h3>
+        <p><%= item.solution %></p>
+      </div>
+    </div>
+    <div class="card" style="margin-top:24px;">
+      <h3>نتیجه نهایی</h3>
+      <p><%= item.result %></p>
+    </div>
+  </div>
+</section>
+
+<section style="background:#fff;">
+  <div class="container">
+    <div class="cta-band">
+      <h2>می‌خواهید نتیجه‌ای مشابه برای برندتان بگیرید؟</h2>
+      <div class="hero-actions">
+        <a href="/request-project" class="btn" style="background:#fff; color:var(--primary-dark);">درخواست پروژه</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<%- include('../partials/footer') %>

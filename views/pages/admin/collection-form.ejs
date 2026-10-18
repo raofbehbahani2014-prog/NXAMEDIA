@@ -1,0 +1,60 @@
+<%- include('../../partials/admin-header') %>
+
+<div class="admin-topbar">
+  <h1><%= item ? 'ویرایش' : 'افزودن' %> <%= conf.label %></h1>
+  <a href="/admin/<%= key %>" class="btn btn-outline">← بازگشت به لیست</a>
+</div>
+
+<div class="admin-card" style="max-width:720px;">
+  <form action="<%= item ? `/admin/${key}/${item[conf.idField]}/edit` : `/admin/${key}/new` %>" method="POST">
+    <% conf.fields.forEach(f => { %>
+      <div class="form-group">
+        <label><%= f.label %><% if (f.required) { %> *<% } %></label>
+
+        <% if (f.type === 'text') { %>
+          <input type="text" name="<%= f.name %>" value="<%= item ? (item[f.name] || '') : '' %>" <%= f.required ? 'required' : '' %>>
+
+        <% } else if (f.type === 'textarea') { %>
+          <textarea name="<%= f.name %>"><%= item ? (item[f.name] || '') : '' %></textarea>
+
+        <% } else if (f.type === 'list') { %>
+          <textarea name="<%= f.name %>" placeholder="هر خط یک مورد بنویسید"><%= item && Array.isArray(item[f.name]) ? item[f.name].join('\n') : '' %></textarea>
+          <p class="hint">هر خط به‌عنوان یک آیتم جداگانه ذخیره می‌شود.</p>
+
+        <% } else if (f.type === 'stats') { %>
+          <textarea name="<%= f.name %>" placeholder="عنوان|مقدار (مثلا: رشد فالوور|+۵۰,۰۰۰)"><%= item && Array.isArray(item[f.name]) ? item[f.name].map(s => `${s.label}|${s.value}`).join('\n') : '' %></textarea>
+          <p class="hint">فرمت هر خط: عنوان|مقدار</p>
+
+        <% } else if (f.type === 'select') { %>
+          <select name="<%= f.name %>">
+            <% f.options.forEach(o => { %><option <%= item && item[f.name] === o ? 'selected' : '' %>><%= o %></option><% }) %>
+          </select>
+
+        <% } else if (f.type === 'file' || f.type === 'private') { %>
+          <div class="field-upload" data-type="<%= f.type %>">
+            <input type="hidden" name="<%= f.name %>" value="<%= item ? (item[f.name] || '') : '' %>">
+            <div class="upload-box">
+              <input type="file">
+              <p class="hint"><%= f.type === 'private' ? 'این فایل در پوشه خصوصی ذخیره می‌شود و فقط بعد از پرداخت قابل دانلود است.' : 'این فایل برای همه قابل دانلود است (دمو/نمونه).' %></p>
+            </div>
+            <div class="upload-preview"></div>
+          </div>
+
+        <% } else if (f.type === 'image' || f.type === 'video') { %>
+          <div class="field-upload" data-type="<%= f.type %>">
+            <input type="hidden" name="<%= f.name %>" value="<%= item ? (item[f.name] || '') : '' %>">
+            <div class="upload-box">
+              <input type="file" accept="<%= f.type === 'image' ? 'image/*' : 'video/*' %>">
+              <p class="hint">برای آپلود <%= f.type === 'image' ? 'تصویر' : 'ویدئو' %> کلیک کنید</p>
+            </div>
+            <div class="upload-preview"></div>
+          </div>
+        <% } %>
+      </div>
+    <% }) %>
+
+    <button type="submit" class="btn btn-primary" style="width:100%; margin-top:10px;">ذخیره</button>
+  </form>
+</div>
+
+<%- include('../../partials/admin-footer') %>

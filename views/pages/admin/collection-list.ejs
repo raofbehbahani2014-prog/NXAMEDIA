@@ -1,0 +1,49 @@
+<%- include('../../partials/admin-header') %>
+
+<div class="admin-topbar">
+  <h1><%= conf.icon %> مدیریت <%= conf.label %></h1>
+  <a href="/admin/<%= key %>/new" class="btn btn-primary">+ افزودن مورد جدید</a>
+</div>
+
+<div class="admin-card">
+  <% if (!items.length) { %>
+    <p style="color:var(--gray); text-align:center; padding:30px 0;">هنوز موردی ثبت نشده است.</p>
+  <% } else { %>
+    <table>
+      <thead>
+        <tr>
+          <th style="width:60px;">تصویر</th>
+          <th>عنوان</th>
+          <th style="width:160px;">شناسه</th>
+          <th style="width:180px;">عملیات</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% items.forEach(item => { %>
+          <tr>
+            <td>
+              <% const imgField = conf.fields.find(f => f.type === 'image'); %>
+              <% if (imgField && item[imgField.name]) { %>
+                <img class="thumb" src="<%= item[imgField.name] %>" alt="">
+              <% } else { %>
+                <div class="thumb" style="display:flex;align-items:center;justify-content:center;">🖼️</div>
+              <% } %>
+            </td>
+            <td><%= item[conf.titleField] %></td>
+            <td style="color:var(--gray); font-size:12px;"><%= item[conf.idField] %></td>
+            <td>
+              <div style="display:flex; gap:6px;">
+                <a href="/admin/<%= key %>/<%= item[conf.idField] %>/edit" class="btn btn-outline btn-sm">ویرایش</a>
+                <form class="confirm-delete" action="/admin/<%= key %>/<%= item[conf.idField] %>/delete" method="POST">
+                  <button type="submit" class="btn btn-danger btn-sm">حذف</button>
+                </form>
+              </div>
+            </td>
+          </tr>
+        <% }) %>
+      </tbody>
+    </table>
+  <% } %>
+</div>
+
+<%- include('../../partials/admin-footer') %>

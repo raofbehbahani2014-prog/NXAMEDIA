@@ -1,0 +1,40 @@
+<%- include('../../partials/header') %>
+
+<section style="padding:40px 0;">
+  <div class="container">
+    <h1 style="font-size:24px;">فاکتورها</h1>
+    <div class="panel-layout" style="margin-top:24px;">
+      <%- include('../../partials/client-sidebar', { active: 'invoices' }) %>
+      <div class="panel-content" style="overflow-x:auto;">
+        <% if (ok === 'service') { %><p class="alert-info" style="margin-bottom:14px;">درخواست شما ثبت شد. بعد از هماهنگی با تیم، فاکتور برای پرداخت فعال می‌شود و در «آخرین فعالیت‌ها» به شما اطلاع داده می‌شود.</p><% } %>
+        <% if (ok === 'dup') { %><p class="alert-info" style="margin-bottom:14px;">درخواست قبلی شما برای این مورد در حال هماهنگی است.</p><% } %>
+        <% if (!invoices.length) { %>
+          <p style="color:var(--gray); text-align:center; padding:30px 0;">هنوز فاکتوری برای شما صادر نشده است.</p>
+        <% } else { %>
+          <table style="width:100%; border-collapse:collapse; font-size:14px;">
+            <thead>
+              <tr style="background:#F8F6FC; text-align:right;">
+                <th style="padding:12px;">شماره</th><th style="padding:12px;">شرح</th><th style="padding:12px;">مبلغ</th><th style="padding:12px;">تاریخ</th><th style="padding:12px;">وضعیت</th><th style="padding:12px;">پرداخت</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% invoices.forEach(i => { %>
+                <tr style="border-top:1px solid var(--border);">
+                  <td style="padding:12px;"><%= i.number || '-' %></td>
+                  <td style="padding:12px;"><%= i.title %></td>
+                  <td style="padding:12px;"><%= i.amount ? fmtMoney(i.amount) + ' تومان' : 'پس از هماهنگی' %></td>
+                  <td style="padding:12px;"><%= fmtDate(i.date) %></td>
+                  <td style="padding:12px; color:<%= i.status === 'پرداخت‌شده' ? '#16A34A' : (i.status === 'در انتظار هماهنگی' ? '#B45309' : '#DC2626') %>;"><%= i.status %></td>
+                  <td style="padding:12px;"><% if (i.status === 'در انتظار پرداخت') { %><a href="/checkout/invoice/<%= i.id %>" class="btn btn-primary" style="padding:6px 14px;">پرداخت</a><% } else if (i.status === 'در انتظار هماهنگی') { %><span style="font-size:12px; color:var(--gray);">هماهنگی با تیم</span><% } else { %>—<% } %></td>
+                </tr>
+              <% }) %>
+            </tbody>
+          </table>
+          <p style="color:var(--gray); font-size:13px; margin-top:16px;">برای هر سوال درباره پرداخت با ما تماس بگیرید: <%= site.contact.phone %></p>
+        <% } %>
+      </div>
+    </div>
+  </div>
+</section>
+
+<%- include('../../partials/footer') %>

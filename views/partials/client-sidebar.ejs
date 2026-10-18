@@ -1,0 +1,11 @@
+<div class="panel-sidebar">
+  <a href="/client/dashboard" class="<%= active === 'dashboard' ? 'active' : '' %>">🏠 داشبورد</a>
+  <a href="/client/projects" class="<%= active === 'projects' ? 'active' : '' %>">📁 پروژه‌های من</a>
+  <a href="/client/content-calendar" class="<%= active === 'calendar' ? 'active' : '' %>">🗓️ تقویم محتوایی</a>
+  <a href="/client/files" class="<%= active === 'files' ? 'active' : '' %>">📎 فایل‌ها</a>
+  <a href="/client/purchases" class="<%= active === 'purchases' ? 'active' : '' %>">🛒 خریدها و دانلودها</a>
+  <a href="/client/invoices" class="<%= active === 'invoices' ? 'active' : '' %>">💳 فاکتورها و پرداخت</a>
+  <form action="/client/logout" method="POST" style="margin-top:12px;">
+    <button type="submit" class="btn btn-outline" style="width:100%;">خروج از حساب</button>
+  </form>
+</div>

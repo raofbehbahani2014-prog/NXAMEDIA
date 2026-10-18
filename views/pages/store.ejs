@@ -1,0 +1,45 @@
+<%- include('../partials/header') %>
+<%
+  const _emoji = { 'صدا و موزیک': '🎵', 'افکت صوتی': '🔊', 'تصویر و استوک': '🖼️', 'قالب آماده ویدئو': '🎞️', 'قالب پست و استوری': '📱', 'LUT و رنگ‌بندی': '🎨', 'ترنزیشن و افکت': '✨', 'فونت': '🔤', 'سایر': '📦' };
+%>
+<section class="hero" style="padding:60px 0; text-align:center;">
+  <div class="container">
+    <div class="breadcrumb"><a href="/">خانه</a> / فروشگاه فیچرها</div>
+    <h1>فروشگاه <span class="highlight">فیچرهای ادیت</span></h1>
+    <p style="margin:0 auto;">قالب آماده، موزیک و افکت صوتی، تصاویر، LUT و ترنزیشن. از هر محصول نمونه رایگان بگیرید و نسخه کامل را بعد از پرداخت دانلود کنید.</p>
+  </div>
+</section>
+
+<section>
+  <div class="container">
+    <div class="chips">
+      <a href="/store" class="chip <%= !cat ? 'active' : '' %>">همه</a>
+      <% categories.forEach(c => { %><a href="/store?cat=<%= encodeURIComponent(c) %>" class="chip <%= cat === c ? 'active' : '' %>"><%= c %></a><% }) %>
+    </div>
+
+    <% if (!assets.length) { %>
+      <p style="text-align:center; color:var(--gray); padding:40px 0;">هنوز محصولی در این دسته ثبت نشده است.</p>
+    <% } else { %>
+      <div class="grid grid-3">
+        <% assets.forEach(a => { %>
+          <a href="/store/<%= a.slug %>" class="card" style="display:block;">
+            <% if (a.cover) { %>
+              <img loading="lazy" src="<%= a.cover %>" alt="<%= a.title %>" style="width:100%; height:150px; object-fit:cover; border-radius:12px; margin-bottom:12px;">
+            <% } else { %>
+              <div style="height:150px; border-radius:12px; margin-bottom:12px; background:var(--ig-gradient); display:flex; align-items:center; justify-content:center; font-size:48px;"><%= _emoji[a.category] || '📦' %></div>
+            <% } %>
+            <div class="tag-sm"><%= a.category %></div>
+            <h3><%= a.title %></h3>
+            <p><%= a.summary %></p>
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+              <b style="color:var(--primary-dark);"><%= amountOf(a) ? fmtMoney(amountOf(a)) + ' تومان' : 'به‌زودی' %></b>
+              <% if (a.demoFile) { %><span class="badge-free">نمونه رایگان</span><% } %>
+            </div>
+          </a>
+        <% }) %>
+      </div>
+    <% } %>
+  </div>
+</section>
+
+<%- include('../partials/footer') %>

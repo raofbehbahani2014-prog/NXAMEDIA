@@ -1,0 +1,62 @@
+<%- include('../partials/header') %>
+
+<section class="hero" style="padding:60px 0;">
+  <div class="container">
+    <div class="breadcrumb"><a href="/">خانه</a> / آموزش</div>
+    <h1>آموزش <span class="highlight">تولید محتوا</span> اینستاگرام</h1>
+    <p>دوره‌ها، مقالات و فایل‌های آموزشی برای یادگیری اصولی تولید محتوا و مدیریت پیج.</p>
+  </div>
+</section>
+
+<section>
+  <div class="container">
+    <div class="section-head">
+      <div class="tag">دوره‌های آموزشی</div>
+      <h2>دوره‌هایی برای یادگیری عملی و کاربردی</h2>
+    </div>
+    <div class="grid grid-3">
+      <% courses.forEach(c => { %>
+        <div class="card">
+          <h3><%= c.title %></h3>
+          <p><%= c.summary %></p>
+          <p style="font-size:13px;">🕒 <%= c.duration %> &nbsp; | &nbsp; 🎯 <%= c.level %></p>
+          <a class="more" href="/courses/<%= c.slug %>">مشاهده دوره ←</a>
+        </div>
+      <% }) %>
+    </div>
+  </div>
+</section>
+
+<section style="background:#fff;">
+  <div class="container">
+    <div class="section-head">
+      <div class="tag">مقالات آموزشی</div>
+      <h2>جدیدترین مطالب وبلاگ</h2>
+    </div>
+    <div class="grid grid-3">
+      <% articles.forEach(a => { %>
+        <div class="card">
+          <h3><%= a.title %></h3>
+          <p><%= a.excerpt %></p>
+          <a class="more" href="/blog/<%= a.slug %>">مطالعه مقاله ←</a>
+        </div>
+      <% }) %>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="container">
+    <div class="card" style="text-align:center;">
+      <h3>📥 دانلود فایل‌های آموزشی رایگان</h3>
+      <p>چک‌لیست تولید محتوای اینستاگرام و قالب تقویم محتوایی را رایگان دریافت کنید.</p>
+      <form id="newsletter-form-2" style="display:flex; gap:8px; max-width:420px; margin:16px auto 0;">
+        <input type="email" name="email" placeholder="ایمیل شما" required
+          style="flex:1; padding:12px 14px; border-radius:10px; border:1.5px solid var(--border);">
+        <button type="submit" class="btn btn-primary">دریافت فایل</button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<%- include('../partials/footer') %>
